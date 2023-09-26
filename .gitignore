@@ -1,0 +1,12 @@
+# Logs
+/node_modules
+
+# OS
+.DS_Store
+
+# Idea
+/.idea
+../.idea
+.idea/
+.idea/workspace.xml
+.idea/vcs.xml
