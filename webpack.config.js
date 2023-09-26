@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const {TsconfigPathsPlugin} = require('tsconfig-paths-webpack-plugin');
 
 const customPlugins = [
     new HtmlWebpackPlugin({
@@ -38,6 +39,15 @@ module.exports = {
     plugins: customPlugins,
     module: {
         rules: customRules
+    },
+    resolve: {
+        extensions: ['.ts', '.js', '.json', '.css', '.scss'],
+        plugins: [
+            new TsconfigPathsPlugin({
+                baseUrl: 'src',
+                configFile: 'tsconfig.json'
+            })
+        ],
     },
     devServer: {
         historyApiFallback: true,
