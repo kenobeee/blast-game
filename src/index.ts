@@ -1,6 +1,6 @@
 import {config} from './config';
 
-import {createBoard, drawBoard} from '@utils';
+import {createBoard, drawBoard, removeTiles} from '@utils';
 
 const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
@@ -17,7 +17,9 @@ canvas.addEventListener('click', (e) => {
     const clickedRow = Math.floor(mouseY / tileSize);
     const clickedCol = Math.floor(mouseX / tileSize);
 
-    console.log(clickedCol, clickedRow);
+    const newBoards = removeTiles({board, row: clickedRow, col: clickedCol});
+
+    drawBoard({board: newBoards, ctx});
 });
 
 drawBoard({board, ctx});

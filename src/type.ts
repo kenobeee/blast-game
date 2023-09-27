@@ -14,3 +14,9 @@ export type DrawBoard = (props:{
     board:Board,
     ctx:CanvasRenderingContext2D
 }) => void;
+
+export type RemoveTiles = (props:{
+    board:Board,
+    row:number,
+    col:number
+}) => Board;
