@@ -1,13 +1,13 @@
 interface IConfig {
     tileSize:number,
-    numRows:number,
-    numCols:number,
+    rowsCount:number,
+    columnCount:number,
     colors:Array<string>
 }
 
 export const config:IConfig = {
     tileSize: 80,
-    numRows: 5,
-    numCols: 5,
+    rowsCount: 5,
+    columnCount: 5,
     colors: ['red', 'blue', 'green', 'yellow', 'purple']
 };

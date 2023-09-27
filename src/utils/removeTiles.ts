@@ -3,32 +3,53 @@ import {config} from '../config';
 import {ITile, RemoveTiles} from '../type';
 
 export const removeTiles:RemoveTiles = (props) => {
-    const {board, row, col} = props;
-    const {tileSize, numCols, numRows} = config;
+    const {board, clickedTiles} = props;
+    const {row, col} = clickedTiles;
+    const {tileSize, columnCount, rowsCount} = config;
 
-    const color = board[row][col]?.color;
-    const tilesToRemove:any = []; // Массив для хранения координат удаляемых тайлов
+    const chosenColor = board[row][col]?.color;
+    const tilesForRemove:any = [];
 
-    const floodFill = (r:number, c:number) => {
-        if (r < 0 || r >= numRows || c < 0 || c >= numCols || board[r][c]?.color !== color || tilesToRemove.includes(board[r][c])) {
-            return;
+    const findAllSameColorAdjacentTiles = (currentRow:number, currentColumn:number) => {
+        const currentTile = board[currentRow][currentColumn];
+
+        const isDesiredColor = currentTile?.color === chosenColor;
+        const isNewTile = !tilesForRemove.includes(currentTile);
+
+        // moving
+        if (isDesiredColor && isNewTile) {
+            tilesForRemove.push(currentTile);
+
+            const nextRow = currentRow + 1;
+            const prevRow = currentRow - 1;
+            const nextColumn = currentColumn + 1;
+            const prevColumn = currentColumn - 1;
+
+            const isAvailableMoveOnX = prevRow >= 0 && nextRow < rowsCount;
+            const isAvailableMoveOnY = prevColumn >= 0 && nextColumn < columnCount;
+
+            if (isAvailableMoveOnX) {
+                findAllSameColorAdjacentTiles(prevRow, currentColumn);
+                findAllSameColorAdjacentTiles(nextRow, currentColumn);
+            }
+
+            if (isAvailableMoveOnY) {
+                findAllSameColorAdjacentTiles(currentRow, prevColumn);
+                findAllSameColorAdjacentTiles(currentRow, nextColumn);
+            }
         }
 
-        tilesToRemove.push(board[r][c]);
-
-        floodFill(r - 1, c); // up
-        floodFill(r + 1, c); // down
-        floodFill(r, c - 1); // left
-        floodFill(r, c + 1); // right
+        return;
     };
 
-    floodFill(row, col);
+    findAllSameColorAdjacentTiles(row, col);
 
-    tilesToRemove.length > 1 && tilesToRemove.forEach((tile:ITile) => {
+    // deleting...
+    tilesForRemove.length > 1 && tilesForRemove.forEach((tile:ITile) => {
         const r = Math.floor(tile.y / tileSize);
         const c = Math.floor(tile.x / tileSize);
 
-        board[r][c] = {...board[r][c], color: 'white'}; // Удаление тайла
+        board[r][c] = null; // Удаление тайла
     });
 
     return board;

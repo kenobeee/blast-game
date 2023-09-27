@@ -17,9 +17,15 @@ canvas.addEventListener('click', (e) => {
     const clickedRow = Math.floor(mouseY / tileSize);
     const clickedCol = Math.floor(mouseX / tileSize);
 
-    const newBoards = removeTiles({board, row: clickedRow, col: clickedCol});
+    const newBoard = removeTiles({
+        board,
+        clickedTiles: {
+            row: clickedRow,
+            col: clickedCol
+        }
+    });
 
-    drawBoard({board: newBoards, ctx});
+    console.log(newBoard);
 });
 
 drawBoard({board, ctx});

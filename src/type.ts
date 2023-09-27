@@ -4,7 +4,7 @@ export interface ITile {
     color:string
 }
 
-export type Board = Array<Array<ITile>>;
+export type Board = Array<Array<ITile | null>>;
 
 // foo
 
@@ -17,6 +17,13 @@ export type DrawBoard = (props:{
 
 export type RemoveTiles = (props:{
     board:Board,
-    row:number,
-    col:number
+    clickedTiles:{
+        row:number,
+        col:number
+    }
 }) => Board;
+
+export type UpdateBoard = (props:{
+    newBoard:Board,
+    ctx:CanvasRenderingContext2D
+}) => void;
