@@ -1,6 +1,6 @@
 import {config} from './config';
 
-import {createBoard, drawBoard, removeTiles} from '@utils';
+import {createBoard, drawBoard, removeTiles} from '@scene';
 
 const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
