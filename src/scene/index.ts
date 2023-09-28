@@ -1,3 +1,2 @@
-export {createBoard} from './createBoard';
-export {drawBoard} from './drawBoard';
+export {initBoard} from './initBoard';
 export {removeTiles} from './removeTiles';

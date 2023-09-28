@@ -1,12 +1,10 @@
 import {config} from './config';
 
-import {createBoard, drawBoard, removeTiles} from '@scene';
+import {initBoard, removeTiles} from '@scene';
 
 const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
-
-const board = createBoard();
-
+const board = initBoard({ctx});
 const {tileSize} = config;
 
 // tile clicking
@@ -27,5 +25,3 @@ canvas.addEventListener('click', (e) => {
 
     console.log(newBoard);
 });
-
-drawBoard({board, ctx});

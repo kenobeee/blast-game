@@ -8,7 +8,9 @@ export type Board = Array<Array<ITile | null>>;
 
 // foo
 
-export type CreateBoard = () => Board;
+export type CreateBoard = (props:{
+    ctx:CanvasRenderingContext2D
+}) => Board;
 
 export type DrawBoard = (props:{
     board:Board,
