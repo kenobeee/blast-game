@@ -1,9 +1,11 @@
-import {CreateBoard, ITile} from '../type';
-
 import {config} from '../config';
 
+import {getRandomColor} from '@utils';
+
+import {CreateBoard, ITile} from '../type';
+
 export const createBoard:CreateBoard = () => {
-    const {rowsCount, columnCount, tileSize, colors} = config;
+    const {rowsCount, columnCount, tileSize} = config;
 
     const board:Array<Array<ITile>> = [];
 
@@ -13,7 +15,7 @@ export const createBoard:CreateBoard = () => {
             board[row][col] = {
                 x: col * tileSize,
                 y: row * tileSize,
-                color: colors[Math.floor(Math.random() * colors.length)]
+                color: getRandomColor()
             };
         }
     }

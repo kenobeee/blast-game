@@ -8,6 +8,12 @@
       ],
       "@scene/*": [
         "scene/*"
+      ],
+      "@utils": [
+        "utils"
+      ],
+      "@utils/*": [
+        "utils/*"
       ]
     },
     "allowJs": true,
