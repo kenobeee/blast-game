@@ -1,17 +1,18 @@
 import {config} from '../config';
 
 import {ITile, RemoveTiles} from '../type';
+import {getTileRowColumnIndexesByXY} from '@utils';
 
 export const removeTiles:RemoveTiles = (props) => {
     const {board, clickedTiles} = props;
     const {row, col} = clickedTiles;
-    const {tileSize, columnCount, rowsCount} = config;
+    const {columnCount, rowsCount} = config;
 
-    const chosenColor = board[row][col]?.color;
+    const chosenColor = board[col][row]?.color;
     const tilesForRemove:any = [];
 
     const findAllSameColorAdjacentTiles = (currentRow:number, currentColumn:number) => {
-        const currentTile = board[currentRow][currentColumn];
+        const currentTile = board[currentColumn][currentRow];
 
         const isDesiredColor = currentTile?.color === chosenColor;
         const isNewTile = !tilesForRemove.includes(currentTile);
@@ -46,10 +47,9 @@ export const removeTiles:RemoveTiles = (props) => {
 
     // deleting...
     tilesForRemove.length > 1 && tilesForRemove.forEach((tile:ITile) => {
-        const r = Math.floor(tile.y / tileSize);
-        const c = Math.floor(tile.x / tileSize);
+        const {column, row} = getTileRowColumnIndexesByXY(tile.x, tile.y);
 
-        board[r][c] = null; // Удаление тайла
+        board[column][row] = null; // Удаление тайла
     });
 
     return board;

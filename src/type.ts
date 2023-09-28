@@ -6,17 +6,11 @@ export interface ITile {
 
 export type Board = Array<Array<ITile | null>>;
 
-// foo
+// scene
 
 export type CreateBoard = (props:{
     ctx:CanvasRenderingContext2D
 }) => Board;
-
-export type DrawBoard = (props:{
-    board:Board,
-    ctx:CanvasRenderingContext2D
-}) => void;
-
 export type RemoveTiles = (props:{
     board:Board,
     clickedTiles:{
@@ -25,7 +19,7 @@ export type RemoveTiles = (props:{
     }
 }) => Board;
 
-export type UpdateBoard = (props:{
-    newBoard:Board,
-    ctx:CanvasRenderingContext2D
-}) => void;
+// utils
+
+export type GetRandomColor = () => string;
+export type GetTileRowColumnIndexesByXY = (x:number, y:number) => {row:number, column:number};

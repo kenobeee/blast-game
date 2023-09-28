@@ -1,25 +1,22 @@
-import {config} from './config';
-
 import {initBoard, removeTiles} from '@scene';
+import {getTileRowColumnIndexesByXY} from '@utils';
 
 const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
 const board = initBoard({ctx});
-const {tileSize} = config;
 
 // tile clicking
 canvas.addEventListener('click', (e) => {
     const rect = canvas.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
-    const clickedRow = Math.floor(mouseY / tileSize);
-    const clickedCol = Math.floor(mouseX / tileSize);
+    const {column, row} = getTileRowColumnIndexesByXY(mouseX, mouseY);
 
     const newBoard = removeTiles({
         board,
         clickedTiles: {
-            row: clickedRow,
-            col: clickedCol
+            row: row,
+            col: column
         }
     });
 
