@@ -1,9 +1,18 @@
-import {addNewTiles, fallDownTiles, initBoard, removeTiles} from '@scene';
+import {addNewTiles, tileFallingDown, initBoard, removeTiles} from '@scenes';
 import {getTileRowColumnIndexesByXY} from '@utils';
+import {growNewTile, fallDownTiles} from '@drawing';
+
+import {IGrowingAnimateService} from './type';
 
 const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
-let board = initBoard({ctx});
+
+const GrowingAnimateService:IGrowingAnimateService = {
+    growNewTile: props => growNewTile({...props, ctx}),
+    fallDownTiles: props => fallDownTiles({...props, ctx})
+};
+
+let board = initBoard({growNewTile: GrowingAnimateService.growNewTile});
 
 const tilesHandler = (e:MouseEvent) => {
     canvas.removeEventListener('click', tilesHandler);
@@ -15,7 +24,7 @@ const tilesHandler = (e:MouseEvent) => {
 
     const boardWithoutSameColorAdjacentTiles = removeTiles({
         board,
-        ctx,
+        growNewTile: GrowingAnimateService.growNewTile,
         clickedTiles: {
             row: row,
             col: column
@@ -25,23 +34,24 @@ const tilesHandler = (e:MouseEvent) => {
     if (boardWithoutSameColorAdjacentTiles) {
         setTimeout(() => {
             // board updating
-            board = fallDownTiles({
+            board = tileFallingDown({
                 board: boardWithoutSameColorAdjacentTiles,
-                ctx
+                fallDownTiles: GrowingAnimateService.fallDownTiles
             });
-
-        }, 300);
+        }, 200);
 
         setTimeout(() => {
             // board updating
             board = addNewTiles({
                 board,
-                ctx
+                growNewTile: GrowingAnimateService.growNewTile
             });
-        }, 600);
-    }
 
-    canvas.addEventListener('click', tilesHandler);
+            canvas.addEventListener('click', tilesHandler);
+        }, 500);
+    } else {
+        canvas.addEventListener('click', tilesHandler);
+    }
 };
 
 // tile clicking

@@ -2,26 +2,11 @@ import {TileFallingDown} from '../type';
 
 import {initConfig, animateConfig} from 'config';
 
-export const fallDownTiles:TileFallingDown = (props) => {
-    const {board, ctx} = props;
+export const tileFallingDown:TileFallingDown = (props) => {
+    const {board, fallDownTiles} = props;
     const {columnCount, rowCount, tileSize} = initConfig;
     const {tailFallingDownSpeed} = animateConfig;
     const updatedBoard = [];
-
-    const fallDownTiles = (props:{constX:number, startY:number, finishY:number, color:string}) => {
-        const {constX, finishY, color} = props;
-        let {startY} = props;
-
-        startY += tailFallingDownSpeed;
-
-        ctx.fillStyle = color;
-        ctx.fillRect(constX, startY, tileSize, tileSize);
-
-        if (startY < finishY) {
-            ctx.clearRect(constX, startY, tileSize, tailFallingDownSpeed);
-            requestAnimationFrame(() => fallDownTiles({finishY, constX, startY, color}));
-        }
-    };
 
     for (let column = 0; column < columnCount; column++)  {
         const currentColumn = board[column];

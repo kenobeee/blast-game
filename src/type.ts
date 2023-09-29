@@ -6,26 +6,52 @@ export interface ITile {
 
 export type Board = Array<Array<ITile | null>>;
 
+// growing
+
+export type GrowNewTileP = {
+    constX:number,
+    constY:number,
+    startSize?:number,
+    color:string,
+    ctx:CanvasRenderingContext2D
+};
+
+export type FallDownTilesP = {
+    constX:number,
+    startY:number,
+    finishY:number,
+    color:string,
+    ctx:CanvasRenderingContext2D
+};
+
+export interface IGrowingAnimateService {
+    growNewTile:(props:Omit<GrowNewTileP, 'ctx'>) => void,
+    fallDownTiles:(props:Omit<FallDownTilesP, 'ctx'>) => void,
+}
+
 // scene
 
 export type InitBoard = (props:{
-    ctx:CanvasRenderingContext2D,
+    growNewTile:IGrowingAnimateService['growNewTile']
 }) => Board;
+
 export type RemoveTiles = (props:{
     board:Board,
-    ctx:CanvasRenderingContext2D,
+    growNewTile:IGrowingAnimateService['growNewTile']
     clickedTiles:{
         row:number,
         col:number
     }
 }) => Board | null;
+
 export type TileFallingDown = (props:{
     board:Board,
-    ctx:CanvasRenderingContext2D
+    fallDownTiles:IGrowingAnimateService['fallDownTiles']
 }) => Board;
+
 export type AddNewTiles = (props:{
     board:Board,
-    ctx:CanvasRenderingContext2D
+    growNewTile:IGrowingAnimateService['growNewTile']
 }) => Board;
 
 // utils

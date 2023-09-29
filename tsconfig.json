@@ -3,17 +3,23 @@
     "baseUrl": "src",
     "outDir": "dist",
     "paths": {
-      "@scene": [
-        "scene"
+      "@scenes": [
+        "scenes"
       ],
-      "@scene/*": [
-        "scene/*"
+      "@scenes/*": [
+        "scenes/*"
       ],
       "@utils": [
         "utils"
       ],
       "@utils/*": [
         "utils/*"
+      ],
+      "@drawing": [
+        "drawing"
+      ],
+      "@drawing/*": [
+        "drawing/*"
       ]
     },
     "allowJs": true,

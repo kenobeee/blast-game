@@ -5,7 +5,7 @@ import {getRandomColor} from '@utils';
 import {InitBoard, ITile} from '../type';
 
 export const initBoard:InitBoard = (props) => {
-    const {ctx} = props;
+    const {growNewTile} = props;
     const {rowCount, columnCount, tileSize} = initConfig;
 
     const board:Array<Array<ITile>> = [];
@@ -21,8 +21,11 @@ export const initBoard:InitBoard = (props) => {
             const tileColor = getRandomColor();
 
             // drawing
-            ctx.fillStyle = tileColor;
-            ctx.fillRect(tileXCoordinate, tileYCoordinate, tileSize, tileSize);
+            growNewTile({
+                color: tileColor,
+                constX: tileXCoordinate,
+                constY: tileYCoordinate
+            });
 
             // caching
             board[column][row] = {

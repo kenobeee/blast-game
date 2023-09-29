@@ -5,9 +5,9 @@ import {getTileRowColumnIndexesByXY} from '@utils';
 import {ITile, RemoveTiles} from '../type';
 
 export const removeTiles:RemoveTiles = (props) => {
-    const {board, ctx, clickedTiles} = props;
+    const {board, clickedTiles, growNewTile} = props;
     const {row, col} = clickedTiles;
-    const {tileSize, backgroundColor} = initConfig;
+    const {backgroundColor} = initConfig;
 
     const chosenColor = board[col][row]?.color;
     const tilesForRemove:any = [];
@@ -47,7 +47,6 @@ export const removeTiles:RemoveTiles = (props) => {
     findAllSameColorAdjacentTiles(row, col);
 
     if (tilesForRemove.length > 1) {
-        // deleting...
         tilesForRemove.forEach((tile:ITile) => {
             const {column, row} = getTileRowColumnIndexesByXY(tile.x, tile.y);
 
@@ -55,8 +54,11 @@ export const removeTiles:RemoveTiles = (props) => {
             board[column][row] = null;
 
             // drawing
-            ctx.fillStyle = backgroundColor;
-            ctx.fillRect(tile.x, tile.y, tileSize, tileSize);
+            growNewTile({
+                constX: tile.x,
+                constY: tile.y,
+                color: backgroundColor
+            });
         });
 
         return board;
