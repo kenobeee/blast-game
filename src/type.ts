@@ -8,16 +8,22 @@ export type Board = Array<Array<ITile | null>>;
 
 // scene
 
-export type CreateBoard = (props:{
-    ctx:CanvasRenderingContext2D
+export type InitBoard = (props:{
+    ctx:CanvasRenderingContext2D,
 }) => Board;
 export type RemoveTiles = (props:{
     board:Board,
+    ctx:CanvasRenderingContext2D,
     clickedTiles:{
         row:number,
         col:number
     }
+}) => Board | null;
+export type TileFallingDown = (props:{
+    board:Board,
+    ctx:CanvasRenderingContext2D
 }) => Board;
+// }) => void;
 
 // utils
 

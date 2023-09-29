@@ -2,9 +2,9 @@ import {config} from '../config';
 
 import {getRandomColor} from '@utils';
 
-import {CreateBoard, ITile} from '../type';
+import {InitBoard, ITile} from '../type';
 
-export const initBoard:CreateBoard = (props) => {
+export const initBoard:InitBoard = (props) => {
     const {ctx} = props;
     const {rowsCount, columnCount, tileSize} = config;
 
