@@ -1,13 +1,13 @@
-interface IConfig {
+interface IInitConfig {
     tileSize:number,
-    rowsCount:number,
+    rowCount:number,
     columnCount:number,
     colors:Array<string>
 }
 
-export const config:IConfig = {
+export const initConfig:IInitConfig = {
     tileSize: 80,
-    rowsCount: 5,
+    rowCount: 5,
     columnCount: 5,
     colors: ['red', 'blue', 'green', 'yellow', 'purple']
 };

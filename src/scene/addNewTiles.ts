@@ -1,10 +1,10 @@
 import {AddNewTiles} from '../type';
-import {config} from '../config';
+import {initConfig} from '../config';
 import {getRandomColor} from '@utils';
 
 export const addNewTiles:AddNewTiles = (props) => {
     const {board, ctx} = props;
-    const {columnCount, tileSize} = config;
+    const {columnCount, tileSize} = initConfig;
 
     const growNewTile = (props:{constX:number, constY:number, startSize:number, growthRate:number, color:string}) => {
         const {constX, constY, color, growthRate} = props;

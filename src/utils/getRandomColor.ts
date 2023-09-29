@@ -1,9 +1,9 @@
-import {config} from '../config';
+import {initConfig} from '../config';
 
 import {GetRandomColor} from '../type';
 
 export const getRandomColor:GetRandomColor = () => {
-    const {colors} = config;
+    const {colors} = initConfig;
 
     return colors[Math.floor(Math.random() * colors.length)];
 };

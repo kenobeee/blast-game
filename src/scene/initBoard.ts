@@ -1,4 +1,4 @@
-import {config} from '../config';
+import {initConfig} from '../config';
 
 import {getRandomColor} from '@utils';
 
@@ -6,7 +6,7 @@ import {InitBoard, ITile} from '../type';
 
 export const initBoard:InitBoard = (props) => {
     const {ctx} = props;
-    const {rowsCount, columnCount, tileSize} = config;
+    const {rowCount, columnCount, tileSize} = initConfig;
 
     const board:Array<Array<ITile>> = [];
 
@@ -15,7 +15,7 @@ export const initBoard:InitBoard = (props) => {
     // column consists of rows indexes
     for (let column = 0; column < columnCount; column++) {
         board[column] = [];
-        for (let row = 0; row < rowsCount; row++) {
+        for (let row = 0; row < rowCount; row++) {
             const tileYCoordinate = row * tileSize;
             const tileXCoordinate = column * tileSize;
             const tileColor = getRandomColor();

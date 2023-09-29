@@ -1,4 +1,4 @@
-import {config} from '../config';
+import {initConfig} from '../config';
 
 import {getTileRowColumnIndexesByXY} from '@utils';
 
@@ -7,7 +7,7 @@ import {ITile, RemoveTiles} from '../type';
 export const removeTiles:RemoveTiles = (props) => {
     const {board, ctx, clickedTiles} = props;
     const {row, col} = clickedTiles;
-    const {tileSize} = config;
+    const {tileSize} = initConfig;
 
     const chosenColor = board[col][row]?.color;
     const tilesForRemove:any = [];

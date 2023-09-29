@@ -1,10 +1,10 @@
 import {TileFallingDown} from '../type';
 
-import {config} from 'config';
+import {initConfig} from 'config';
 
 export const fallDownTiles:TileFallingDown = (props) => {
     const {board, ctx} = props;
-    const {columnCount, rowsCount, tileSize} = config;
+    const {columnCount, rowCount, tileSize} = initConfig;
     const updatedBoard = [];
 
     const fallDownTiles = (props:{constX:number, startY:number, finishY:number, speed:number, color:string}) => {
@@ -32,7 +32,7 @@ export const fallDownTiles:TileFallingDown = (props) => {
             const empties = currentColumn.filter(tile => tile === null);
             const newColumn = empties.concat(tiles);
 
-            for (let row = 0; row < rowsCount; row++) {
+            for (let row = 0; row < rowCount; row++) {
                 const newIndex = newColumn.indexOf(currentColumn[row]);
 
                 if (newIndex !== -1) {

@@ -1,9 +1,9 @@
-import {config} from '../config';
+import {initConfig} from '../config';
 
 import {GetTileRowColumnIndexesByXY} from '../type';
 
 export const getTileRowColumnIndexesByXY:GetTileRowColumnIndexesByXY = (x, y) => {
-    const {tileSize} = config;
+    const {tileSize} = initConfig;
 
     return {
         row: Math.floor(y / tileSize),
