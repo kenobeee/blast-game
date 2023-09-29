@@ -1,24 +1,25 @@
 import {TileFallingDown} from '../type';
 
-import {initConfig} from 'config';
+import {initConfig, animateConfig} from 'config';
 
 export const fallDownTiles:TileFallingDown = (props) => {
     const {board, ctx} = props;
     const {columnCount, rowCount, tileSize} = initConfig;
+    const {tailFallingDownSpeed} = animateConfig;
     const updatedBoard = [];
 
-    const fallDownTiles = (props:{constX:number, startY:number, finishY:number, speed:number, color:string}) => {
-        const {speed, constX, finishY, color} = props;
+    const fallDownTiles = (props:{constX:number, startY:number, finishY:number, color:string}) => {
+        const {constX, finishY, color} = props;
         let {startY} = props;
 
-        startY += speed;
+        startY += tailFallingDownSpeed;
 
         ctx.fillStyle = color;
         ctx.fillRect(constX, startY, tileSize, tileSize);
 
         if (startY < finishY) {
-            ctx.clearRect(constX, startY, tileSize, speed);
-            requestAnimationFrame(() => fallDownTiles({speed, finishY, constX, startY, color}));
+            ctx.clearRect(constX, startY, tileSize, tailFallingDownSpeed);
+            requestAnimationFrame(() => fallDownTiles({finishY, constX, startY, color}));
         }
     };
 
@@ -46,9 +47,8 @@ export const fallDownTiles:TileFallingDown = (props) => {
 
                         // drawing
                         fallDownTiles({
-                            speed: 10,
                             constX: currentTile.x,
-                            startY: currentTile.y - 10,
+                            startY: currentTile.y - tailFallingDownSpeed,
                             finishY: currentTile.y + (tileSize * shift),
                             color: currentTile.color
                         });

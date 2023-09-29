@@ -7,7 +7,7 @@ import {ITile, RemoveTiles} from '../type';
 export const removeTiles:RemoveTiles = (props) => {
     const {board, ctx, clickedTiles} = props;
     const {row, col} = clickedTiles;
-    const {tileSize} = initConfig;
+    const {tileSize, backgroundColor} = initConfig;
 
     const chosenColor = board[col][row]?.color;
     const tilesForRemove:any = [];
@@ -55,7 +55,7 @@ export const removeTiles:RemoveTiles = (props) => {
             board[column][row] = null;
 
             // drawing
-            ctx.fillStyle = 'white';
+            ctx.fillStyle = backgroundColor;
             ctx.fillRect(tile.x, tile.y, tileSize, tileSize);
         });
 

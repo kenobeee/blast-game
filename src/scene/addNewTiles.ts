@@ -1,16 +1,17 @@
 import {AddNewTiles} from '../type';
-import {initConfig} from '../config';
+import {initConfig, animateConfig} from '../config';
 import {getRandomColor} from '@utils';
 
 export const addNewTiles:AddNewTiles = (props) => {
     const {board, ctx} = props;
     const {columnCount, tileSize} = initConfig;
+    const {tailGrowingRate, tailGrowingStartSize} = animateConfig;
 
-    const growNewTile = (props:{constX:number, constY:number, startSize:number, growthRate:number, color:string}) => {
-        const {constX, constY, color, growthRate} = props;
+    const growNewTile = (props:{constX:number, constY:number, startSize:number, color:string}) => {
+        const {constX, constY, color} = props;
         let {startSize} = props;
 
-        startSize += growthRate;
+        startSize += tailGrowingRate;
 
         ctx.fillStyle = color;
         ctx.fillRect(
@@ -20,7 +21,7 @@ export const addNewTiles:AddNewTiles = (props) => {
             startSize);
 
         if (startSize < tileSize) {
-            requestAnimationFrame(() => growNewTile({constX, constY, startSize, growthRate, color}));
+            requestAnimationFrame(() => growNewTile({constX, constY, startSize, color}));
         }
     };
 
@@ -37,8 +38,7 @@ export const addNewTiles:AddNewTiles = (props) => {
                 // drawing
                 growNewTile({
                     color: tileColor,
-                    startSize: 0,
-                    growthRate: 10,
+                    startSize: tailGrowingStartSize,
                     constX: tileXCoordinate,
                     constY: tileYCoordinate
                 });
