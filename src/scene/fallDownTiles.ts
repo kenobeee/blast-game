@@ -16,11 +16,7 @@ export const fallDownTiles:TileFallingDown = (props) => {
         ctx.fillStyle = color;
         ctx.fillRect(constX, startY, tileSize, tileSize);
 
-        if (startY >= finishY) {
-            // on the final destination
-            startY = finishY;
-        } else {
-            // continuing
+        if (startY < finishY) {
             ctx.clearRect(constX, startY, tileSize, speed);
             requestAnimationFrame(() => fallDownTiles({speed, finishY, constX, startY, color}));
         }

@@ -23,7 +23,10 @@ export type TileFallingDown = (props:{
     board:Board,
     ctx:CanvasRenderingContext2D
 }) => Board;
-// }) => void;
+export type AddNewTiles = (props:{
+    board:Board,
+    ctx:CanvasRenderingContext2D
+}) => Board;
 
 // utils
 

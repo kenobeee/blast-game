@@ -1,4 +1,4 @@
-import {fallDownTiles, initBoard, removeTiles} from '@scene';
+import {addNewTiles, fallDownTiles, initBoard, removeTiles} from '@scene';
 import {getTileRowColumnIndexesByXY} from '@utils';
 
 const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
@@ -31,6 +31,14 @@ const tilesHandler = (e:MouseEvent) => {
             });
 
         }, 300);
+
+        setTimeout(() => {
+            // board updating
+            board = addNewTiles({
+                board,
+                ctx
+            });
+        }, 600);
     }
 
     canvas.addEventListener('click', tilesHandler);
