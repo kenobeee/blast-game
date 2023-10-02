@@ -4,6 +4,15 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
 </head>
 <body>
-    <canvas id="gameCanvas"></canvas>
+    <main id="main">
+        <canvas id="gameCanvas"></canvas>
+        <section class="score" id="scoreSection">
+            <div class="score__wrapper">
+                <span class="score__value" id="scoreValue">
+                    0
+                </span>
+            </div>
+        </section>
+    </main>
 </body>
 </html>
