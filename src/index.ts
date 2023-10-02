@@ -2,7 +2,7 @@ import {addNewTiles, tileFallingDown, initBoard, removeTiles} from '@scenes';
 import {getTileRowColumnIndexesByXY, pause} from '@utils';
 import {growNewTile, fallDownTiles} from '@drawing';
 import {initConfig} from './config';
-import {IGrowingAnimateService} from './type';
+import {IDrawingAnimateService} from './type';
 
 // DOM
 
@@ -21,14 +21,14 @@ const updateScore = (value:number) => {
 };
 
 // todo rename
-const GrowingAnimateService:IGrowingAnimateService = {
+const DrawingAnimateService:IDrawingAnimateService = {
     growNewTile: props => growNewTile({...props, ctx}),
     fallDownTiles: props => fallDownTiles({...props, ctx})
 };
 
 // vars
 
-let board = initBoard({growNewTile: GrowingAnimateService.growNewTile});
+let board = initBoard({growNewTile: DrawingAnimateService.growNewTile});
 let score = 0;
 
 const tilesHandler = async (e:MouseEvent) => {
@@ -41,7 +41,7 @@ const tilesHandler = async (e:MouseEvent) => {
 
     const boardWithoutSameColorAdjacentTiles = removeTiles({
         board,
-        growNewTile: GrowingAnimateService.growNewTile,
+        growNewTile: DrawingAnimateService.growNewTile,
         clickedTiles: {
             row: row,
             col: column
@@ -55,12 +55,12 @@ const tilesHandler = async (e:MouseEvent) => {
 
         board = await tileFallingDown({
             board: boardWithoutSameColorAdjacentTiles,
-            fallDownTiles: GrowingAnimateService.fallDownTiles
+            fallDownTiles: DrawingAnimateService.fallDownTiles
         });
        
         board = addNewTiles({
             board,
-            growNewTile: GrowingAnimateService.growNewTile
+            growNewTile: DrawingAnimateService.growNewTile
         });
 
         canvas.addEventListener('click', tilesHandler);

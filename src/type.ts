@@ -25,7 +25,7 @@ export type FallDownTilesP = {
     isTopmostTile:boolean
 };
 
-export interface IGrowingAnimateService {
+export interface IDrawingAnimateService {
     growNewTile:(props:Omit<GrowNewTileP, 'ctx'>) => void,
     fallDownTiles:(props:Omit<FallDownTilesP, 'ctx'>) => void,
 }
@@ -33,12 +33,12 @@ export interface IGrowingAnimateService {
 // scene
 
 export type InitBoard = (props:{
-    growNewTile:IGrowingAnimateService['growNewTile']
+    growNewTile:IDrawingAnimateService['growNewTile']
 }) => Board;
 
 export type RemoveTiles = (props:{
     board:Board,
-    growNewTile:IGrowingAnimateService['growNewTile']
+    growNewTile:IDrawingAnimateService['growNewTile']
     clickedTiles:{
         row:number,
         col:number
@@ -47,12 +47,12 @@ export type RemoveTiles = (props:{
 
 export type TileFallingDown = (props:{
     board:Board,
-    fallDownTiles:IGrowingAnimateService['fallDownTiles']
+    fallDownTiles:IDrawingAnimateService['fallDownTiles']
 }) => Promise<Board>;
 
 export type AddNewTiles = (props:{
     board:Board,
-    growNewTile:IGrowingAnimateService['growNewTile']
+    growNewTile:IDrawingAnimateService['growNewTile']
 }) => Board;
 
 // utils
