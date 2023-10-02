@@ -2,8 +2,8 @@ interface IInitConfig {
     tileSize:number,
     rowCount:number,
     columnCount:number,
-    backgroundColor:string,
-    colors:Array<string>
+    emptyTileBackground:string,
+    tilesBackgrounds:Array<string>
 }
 
 interface IAnimateConfig {
@@ -16,12 +16,19 @@ export const initConfig:IInitConfig = {
     tileSize: 80,
     rowCount: 5,
     columnCount: 5,
-    backgroundColor: 'white',
-    colors: ['red', 'blue', 'green', 'yellow', 'purple']
+    emptyTileBackground: require('../assets/img/tiles/empty.png'),
+    tilesBackgrounds: [
+        require('../assets/img/tiles/block_5.png'),
+        require('../assets/img/tiles/block_10.png'),
+        require('../assets/img/tiles/block_20.png'),
+        require('../assets/img/tiles/block_25.png'),
+        require('../assets/img/tiles/block_50.png'),
+        require('../assets/img/tiles/block_100.png')
+    ]
 };
 
 export const animateConfig:IAnimateConfig = {
     tailFallingDownSpeed: 10,
-    tailGrowingRate: 10,
+    tailGrowingRate: 5,
     tailGrowingStartSize: 0
 };

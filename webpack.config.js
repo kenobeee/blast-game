@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const {TsconfigPathsPlugin} = require('tsconfig-paths-webpack-plugin');
+const CopyPlugin = require("copy-webpack-plugin");
 
 const customPlugins = [
     new HtmlWebpackPlugin({
@@ -16,7 +17,16 @@ const customPlugins = [
         extensions: ['js', 'ts'],
         failOnError: false,
         failOnWarning: false,
-    })
+    }),
+    new CopyPlugin({
+        patterns: [
+            {
+                from: 'assets/',
+                to: 'assets/',
+                toType: 'dir'
+            },
+        ],
+    }),
 ];
 
 const customRules = [
@@ -24,7 +34,16 @@ const customRules = [
         test: /\.ts$/,
         exclude: /node_modules/,
         use: ['ts-loader'],
-    }
+    },
+    {
+        test: /\.(svg|png|jpg|jpeg|woff|woff2|otf|ttf|ogg|aac|mp3|mp4|wav|ico)$/,
+        loader: 'file-loader',
+        options: {
+            esModule: false,
+            toType: 'dir',
+            name: '[path][name].[ext]'
+        }
+    },
 ];
 
 module.exports = {
@@ -48,6 +67,9 @@ module.exports = {
                 configFile: 'tsconfig.json'
             })
         ],
+        alias: {
+            '_assets': path.resolve(__dirname, 'assets'),
+        }
     },
     devServer: {
         historyApiFallback: true,

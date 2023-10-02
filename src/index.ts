@@ -1,11 +1,15 @@
 import {addNewTiles, tileFallingDown, initBoard, removeTiles} from '@scenes';
-import {getTileRowColumnIndexesByXY} from '@utils';
+import {getTileRowColumnIndexesByXY, pause} from '@utils';
 import {growNewTile, fallDownTiles} from '@drawing';
-
+import {initConfig} from './config';
 import {IGrowingAnimateService} from './type';
 
 const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+
+// dynamic sizing
+canvas.height = initConfig.tileSize * initConfig.rowCount;
+canvas.width = initConfig.tileSize * initConfig.columnCount;
 
 const GrowingAnimateService:IGrowingAnimateService = {
     growNewTile: props => growNewTile({...props, ctx}),
@@ -14,7 +18,7 @@ const GrowingAnimateService:IGrowingAnimateService = {
 
 let board = initBoard({growNewTile: GrowingAnimateService.growNewTile});
 
-const tilesHandler = (e:MouseEvent) => {
+const tilesHandler = async (e:MouseEvent) => {
     canvas.removeEventListener('click', tilesHandler);
 
     const rect = canvas.getBoundingClientRect();
@@ -32,23 +36,20 @@ const tilesHandler = (e:MouseEvent) => {
     });
 
     if (boardWithoutSameColorAdjacentTiles) {
-        setTimeout(() => {
-            // board updating
-            board = tileFallingDown({
-                board: boardWithoutSameColorAdjacentTiles,
-                fallDownTiles: GrowingAnimateService.fallDownTiles
-            });
-        }, 200);
+        await pause(200);
 
-        setTimeout(() => {
-            // board updating
-            board = addNewTiles({
-                board,
-                growNewTile: GrowingAnimateService.growNewTile
-            });
+        board = await tileFallingDown({
+            board: boardWithoutSameColorAdjacentTiles,
+            fallDownTiles: GrowingAnimateService.fallDownTiles
+        });
+       
+        board = addNewTiles({
+            board,
+            growNewTile: GrowingAnimateService.growNewTile
+        });
 
-            canvas.addEventListener('click', tilesHandler);
-        }, 500);
+        canvas.addEventListener('click', tilesHandler);
+
     } else {
         canvas.addEventListener('click', tilesHandler);
     }

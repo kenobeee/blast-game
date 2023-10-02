@@ -7,15 +7,15 @@ import {ITile, RemoveTiles} from '../type';
 export const removeTiles:RemoveTiles = (props) => {
     const {board, clickedTiles, growNewTile} = props;
     const {row, col} = clickedTiles;
-    const {backgroundColor} = initConfig;
+    const {emptyTileBackground} = initConfig;
 
-    const chosenColor = board[col][row]?.color;
+    const chosenBg = board[col][row]?.bg;
     const tilesForRemove:any = [];
 
     const findAllSameColorAdjacentTiles = (currentRow:number, currentColumn:number) => {
         const currentTile = board[currentColumn][currentRow];
 
-        const isDesiredColor = currentTile?.color === chosenColor;
+        const isDesiredColor = currentTile?.bg === chosenBg;
         const isNewTile = !tilesForRemove.some((tile:ITile) => tile === currentTile);
 
         if (isDesiredColor && isNewTile) {
@@ -53,12 +53,17 @@ export const removeTiles:RemoveTiles = (props) => {
             // caching
             board[column][row] = null;
 
-            // drawing
-            growNewTile({
-                constX: tile.x,
-                constY: tile.y,
-                color: backgroundColor
-            });
+            const image = new Image();
+
+            image.src = emptyTileBackground;
+            image.onload = () => {
+                // drawing
+                growNewTile({
+                    constX: tile.x,
+                    constY: tile.y,
+                    bg: image
+                });
+            };
         });
 
         return board;

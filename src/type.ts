@@ -1,7 +1,7 @@
 export interface ITile {
     x:number,
     y:number,
-    color:string
+    bg:string
 }
 
 export type Board = Array<Array<ITile | null>>;
@@ -12,7 +12,7 @@ export type GrowNewTileP = {
     constX:number,
     constY:number,
     startSize?:number,
-    color:string,
+    bg:HTMLImageElement,
     ctx:CanvasRenderingContext2D
 };
 
@@ -20,8 +20,9 @@ export type FallDownTilesP = {
     constX:number,
     startY:number,
     finishY:number,
-    color:string,
-    ctx:CanvasRenderingContext2D
+    bg:HTMLImageElement,
+    ctx:CanvasRenderingContext2D,
+    isTopmostTile:boolean
 };
 
 export interface IGrowingAnimateService {
@@ -47,7 +48,7 @@ export type RemoveTiles = (props:{
 export type TileFallingDown = (props:{
     board:Board,
     fallDownTiles:IGrowingAnimateService['fallDownTiles']
-}) => Board;
+}) => Promise<Board>;
 
 export type AddNewTiles = (props:{
     board:Board,
@@ -56,5 +57,5 @@ export type AddNewTiles = (props:{
 
 // utils
 
-export type GetRandomColor = () => string;
+export type GetRandomBg = () => string;
 export type GetTileRowColumnIndexesByXY = (x:number, y:number) => {row:number, column:number};

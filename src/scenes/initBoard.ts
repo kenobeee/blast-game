@@ -1,12 +1,12 @@
 import {initConfig} from '../config';
 
-import {getRandomColor} from '@utils';
+import {generateTileByRowAndColumn} from '@utils';
 
 import {InitBoard, ITile} from '../type';
 
 export const initBoard:InitBoard = (props) => {
     const {growNewTile} = props;
-    const {rowCount, columnCount, tileSize} = initConfig;
+    const {rowCount, columnCount} = initConfig;
 
     const board:Array<Array<ITile>> = [];
 
@@ -16,22 +16,24 @@ export const initBoard:InitBoard = (props) => {
     for (let column = 0; column < columnCount; column++) {
         board[column] = [];
         for (let row = 0; row < rowCount; row++) {
-            const tileYCoordinate = row * tileSize;
-            const tileXCoordinate = column * tileSize;
-            const tileColor = getRandomColor();
+            const newTile = generateTileByRowAndColumn({row, column});
+            const image = new Image();
 
-            // drawing
-            growNewTile({
-                color: tileColor,
-                constX: tileXCoordinate,
-                constY: tileYCoordinate
-            });
+            image.src = newTile.bg;
+            image.onload = () => {
+                // drawing
+                growNewTile({
+                    bg: image,
+                    constX: newTile.x,
+                    constY: newTile.y
+                });
+            };
 
             // caching
             board[column][row] = {
-                x: tileXCoordinate,
-                y: tileYCoordinate,
-                color: tileColor
+                x: newTile.x,
+                y: newTile.y,
+                bg: newTile.bg
             };
         }
     }

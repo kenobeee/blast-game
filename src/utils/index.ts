@@ -1,2 +1,3 @@
-export {getRandomColor} from './getRandomColor';
+export {generateTileByRowAndColumn} from './generateTileByRowAndColumn';
+export {pause} from './pause';
 export {getTileRowColumnIndexesByXY} from './getTileRowColumnIndexesByXY';
