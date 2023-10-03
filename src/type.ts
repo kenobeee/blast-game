@@ -10,7 +10,8 @@ export enum TileGroup {
 export interface ITileInfo {
     group:TileGroup,
     score:number,
-    bg:string
+    bg:string,
+    view:string
 }
 
 export interface ITile extends ITileInfo {

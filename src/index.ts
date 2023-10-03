@@ -2,7 +2,7 @@ import {addNewTiles, tileFallingDown, initBoard, removeTiles} from '@scenes';
 import {getTileRowColumnIndexesByXY, pause} from '@utils';
 import {growNewTile, fallDownTiles} from '@drawing';
 import {initConfig, gameConfig} from './config';
-import {IDrawingAnimateService} from './type';
+import {IDrawingAnimateService, ITile} from './type';
 
 // DOM
 
@@ -12,6 +12,7 @@ const scoreValue = document.getElementById('scoreValue') as HTMLSpanElement;
 const stepsValue = document.getElementById('stepsValue') as HTMLSpanElement;
 const scoreTarget = document.getElementById('scoreTarget') as HTMLSpanElement;
 const shufflingValue = document.getElementById('shufflingValue') as HTMLSpanElement;
+const tilesInfoContainer = document.getElementById('tilesInfoContainer') as HTMLElement;
 
 // init changing
 
@@ -20,6 +21,27 @@ scoreTarget.textContent = `${gameConfig.scoreTarget}`;
 shufflingValue.textContent = `${gameConfig.totalAvailableShuffling}`;
 canvas.height = initConfig.tileSize * initConfig.rowCount;
 canvas.width = initConfig.tileSize * initConfig.columnCount;
+
+const createThenAppend = (props:Pick<ITile, 'view' | 'score'>) => {
+    const {view, score} = props;
+    const wrapper = document.createElement('div');
+    const img = document.createElement('span');
+    const text = document.createElement('span');
+
+    wrapper.className = 'sidebar__pair';
+    img.className = 'sidebar__img';
+    text.className = 'sidebar__text';
+
+    text.textContent = `${score}`;
+    img.style.backgroundImage = `url(${view})`;
+
+    wrapper.appendChild(img);
+    wrapper.appendChild(text);
+
+    tilesInfoContainer.appendChild(wrapper);
+};
+
+initConfig.tilesInfo.forEach(tile => createThenAppend(tile));
 
 // render foo
 

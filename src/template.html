@@ -90,7 +90,6 @@
         .sidebar {
             position: absolute;
             top: 0;
-            right: 0;
 
             padding: 2% 1%;
 
@@ -98,13 +97,28 @@
             height: 100%;
 
             background-image: url("assets/img/common/sidebar_bg.jpg");
+        }
+        .sidebar__right {
+            right: 0;
+
             border-left: 4px solid rgb(172, 160, 160);
             border-radius: 30px 0 0 30px;
+        }
+        .sidebar__left {
+            left: 0;
+
+            border-right: 4px solid rgb(172, 160, 160);
+            border-radius: 0 30px 30px 0;
         }
         .sidebar__inner {
             display: flex;
             flex-direction: column;
             align-items: center;
+        }
+        .sidebar__left .sidebar__inner {
+            justify-content: space-evenly;
+            flex-direction: row;
+            flex-wrap: wrap;
         }
         .sidebar__pair {
             display: flex;
@@ -113,20 +127,33 @@
 
             margin-top: 60px;
         }
-        .sidebar__pair:first-child {
+        .sidebar__left .sidebar__pair {
+            margin-top: 20px;
+        }
+        .sidebar__right .sidebar__pair:first-child {
             margin-top: 0;
         }
-        .sidebar__pair--text {
+        .sidebar__text {
             font-size: 26px;
             text-align: center;
             text-shadow: #000 2px 2px;
         }
-        .sidebar__pair--value {
+        .sidebar__value {
             margin-top: 20px;
 
             font-size: 20px;
             font-weight: 700;
             text-shadow: #000 1px 1px;
+        }
+        .sidebar__img {
+            width: 80px;
+            height: 80px;
+
+            margin-bottom: 10px;
+
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
         }
     </style>
 </head>
@@ -135,24 +162,29 @@
         <div class="container">
             <canvas class="canvas" id="gameCanvas"></canvas>
         </div>
-        <div class="sidebar" id="scoreSection">
+        <div class="sidebar sidebar__right" id="scoreSection">
             <div class="sidebar__inner">
                 <div class="sidebar__pair">
-                    <span class="sidebar__pair--text">Scored points</span>
-                    <span class="sidebar__pair--value" id="scoreValue">0</span>
+                    <span class="sidebar__text">Scored points</span>
+                    <span class="sidebar__value" id="scoreValue">0</span>
                 </div>
                 <div class="sidebar__pair">
-                    <span class="sidebar__pair--text">Goal points</span>
-                    <span class="sidebar__pair--value" id="scoreTarget">0</span>
+                    <span class="sidebar__text">Goal points</span>
+                    <span class="sidebar__value" id="scoreTarget">0</span>
                 </div>
                 <div class="sidebar__pair">
-                    <span class="sidebar__pair--text">Steps left</span>
-                    <span class="sidebar__pair--value" id="stepsValue">0</span>
+                    <span class="sidebar__text">Steps left</span>
+                    <span class="sidebar__value" id="stepsValue">0</span>
                 </div>
                 <div class="sidebar__pair">
-                    <span class="sidebar__pair--text">Shuffling left</span>
-                    <span class="sidebar__pair--value" id="shufflingValue">0</span>
+                    <span class="sidebar__text">Shuffling left</span>
+                    <span class="sidebar__value" id="shufflingValue">0</span>
                 </div>
+            </div>
+        </div>
+        <div class="sidebar sidebar__left">
+            <div class="sidebar__inner" id="tilesInfoContainer">
+            <!-- mapping -->
             </div>
         </div>
     </main>

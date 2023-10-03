@@ -9,32 +9,38 @@ export const initConfig:IInitConfig = {
         {
             group: TileGroup.block5,
             score: 5,
-            bg: require('../assets/img/tiles/block_5.png')
+            bg: require('../assets/img/tiles/2d_block_5.png'),
+            view: require('../assets/img/tiles/3d_block_5.png')
         },
         {
             group: TileGroup.block10,
             score: 10,
-            bg: require('../assets/img/tiles/block_10.png')
+            bg: require('../assets/img/tiles/2d_block_10.png'),
+            view: require('../assets/img/tiles/3d_block_10.png')
         },
         {
             group: TileGroup.block20,
             score: 20,
-            bg: require('../assets/img/tiles/block_20.png')
+            bg: require('../assets/img/tiles/2d_block_20.png'),
+            view: require('../assets/img/tiles/3d_block_20.png')
         },
         {
             group: TileGroup.block25,
             score: 25,
-            bg: require('../assets/img/tiles/block_25.png')
+            bg: require('../assets/img/tiles/2d_block_25.png'),
+            view: require('../assets/img/tiles/3d_block_25.png')
         },
         {
             group: TileGroup.block50,
             score: 50,
-            bg: require('../assets/img/tiles/block_50.png')
+            bg: require('../assets/img/tiles/2d_block_50.png'),
+            view: require('../assets/img/tiles/3d_block_50.png')
         },
         {
             group: TileGroup.block100,
             score: 100,
-            bg: require('../assets/img/tiles/block_100.png')
+            bg: require('../assets/img/tiles/2d_block_100.png'),
+            view: require('../assets/img/tiles/3d_block_100.png')
         }
     ]
 };
