@@ -45,22 +45,22 @@ initConfig.tilesInfo.forEach(tile => createThenAppend(tile));
 
 // render foo
 
-const updateScore = (value:number) => {
-    score = value;
-    scoreValue.textContent = `${value}`;
-};
-
-const decreaseSteps = () => {
+const updateState = (newScoreQty:number) => {
+    score = newScoreQty;
     currentStepCount -= 1;
+
+    scoreValue.textContent = `${newScoreQty}`;
     stepsValue.textContent = `${currentStepCount}`;
 
     if (currentStepCount !== 0) {
-        // continue
-        if (score >= gameConfig.scoreTarget) alert('win');
+        if (newScoreQty >= gameConfig.scoreTarget) disableCanvas();
+        else enableCanvas();
     } else {
-        alert('lose');
+        disableCanvas();
     }
 };
+const disableCanvas = () => canvas.removeEventListener('click', tilesHandler);
+const enableCanvas = () => canvas.addEventListener('click', tilesHandler);
 
 const DrawingAnimateService:IDrawingAnimateService = {
     growNewTile: props => growNewTile({...props, ctx}),
@@ -76,7 +76,7 @@ let currentStepCount = gameConfig.totalAvailableSteps;
 // handlers
 
 const tilesHandler = async (e:MouseEvent) => {
-    canvas.removeEventListener('click', tilesHandler);
+    disableCanvas();
 
     const rect = canvas.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
@@ -110,16 +110,13 @@ const tilesHandler = async (e:MouseEvent) => {
         // todo сделать динамическим значение
         await pause(250);
 
-        updateScore(updated.score);
-        decreaseSteps();
-
-        canvas.addEventListener('click', tilesHandler);
+        updateState(updated.score);
     } else {
-        canvas.addEventListener('click', tilesHandler);
+        enableCanvas();
     }
 };
 const shuffleTilesHandler = async () => {
-    canvas.removeEventListener('click', tilesHandler);
+    disableCanvas();
     shuffleTilesButton.disabled = true;
 
     const flattenedBoard = board.flat() as Array<ITile>;
@@ -199,14 +196,16 @@ const shuffleTilesHandler = async () => {
 
     board = twoDimensionalArray;
 
-    canvas.addEventListener('click', tilesHandler);
+    enableCanvas();
 };
 const teleportTilesHandler = () => {
+    disableCanvas();
 
+    enableCanvas();
 };
 
 // event listening
 
-canvas.addEventListener('click', tilesHandler);
+enableCanvas();
 shuffleTilesButton.addEventListener('click', shuffleTilesHandler);
 teleportTilesButton.addEventListener('click', teleportTilesHandler);
