@@ -5,20 +5,21 @@ import {getTileRowColumnIndexesByXY} from '@utils';
 import {ITile, RemoveTiles} from '../type';
 
 export const removeTiles:RemoveTiles = (props) => {
-    const {board, clickedTiles, growNewTile} = props;
+    const {board, clickedTiles, growNewTile, currentScore} = props;
     const {row, col} = clickedTiles;
     const {emptyTileBackground} = initConfig;
 
-    const chosenBg = board[col][row]?.bg;
+    const chosenGroup = board[col][row]?.group;
     const tilesForRemove:any = [];
+    let updatedScore:number = currentScore;
 
     const findAllSameColorAdjacentTiles = (currentRow:number, currentColumn:number) => {
         const currentTile = board[currentColumn][currentRow];
 
-        const isDesiredColor = currentTile?.bg === chosenBg;
+        const isDesiredGroup = currentTile?.group === chosenGroup;
         const isNewTile = !tilesForRemove.some((tile:ITile) => tile === currentTile);
 
-        if (isDesiredColor && isNewTile) {
+        if (isDesiredGroup && isNewTile) {
             tilesForRemove.push(currentTile);
 
             const numRows = board.length;
@@ -50,6 +51,8 @@ export const removeTiles:RemoveTiles = (props) => {
         tilesForRemove.forEach((tile:ITile) => {
             const {column, row} = getTileRowColumnIndexesByXY(tile.x, tile.y);
 
+            // @ts-ignore
+            updatedScore += board[column][row]?.score;
             // caching
             board[column][row] = null;
 
@@ -66,7 +69,7 @@ export const removeTiles:RemoveTiles = (props) => {
             };
         });
 
-        return board;
+        return {board, score: updatedScore};
     } else {
         return null;
     }

@@ -27,11 +27,7 @@ export const addNewTiles:AddNewTiles = (props) => {
                 };
 
                 // caching
-                currentColumn[row] = {
-                    x: newTile.x,
-                    y: newTile.y,
-                    bg: newTile.bg
-                };
+                currentColumn[row] = newTile;
             }
         }
     }

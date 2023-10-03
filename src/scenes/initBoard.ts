@@ -30,11 +30,7 @@ export const initBoard:InitBoard = (props) => {
             };
 
             // caching
-            board[column][row] = {
-                x: newTile.x,
-                y: newTile.y,
-                bg: newTile.bg
-            };
+            board[column][row] = newTile;
         }
     }
 

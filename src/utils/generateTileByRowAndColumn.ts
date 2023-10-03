@@ -1,13 +1,15 @@
-import {ITile} from '../type';
 import {initConfig} from '../config';
+import {GenerateTileByRowAndColumn} from '../type';
 
-export const generateTileByRowAndColumn = (props:{row:number, column:number}):ITile => {
+export const generateTileByRowAndColumn:GenerateTileByRowAndColumn = (props) => {
     const {row, column} = props;
-    const {tilesBackgrounds, tileSize} = initConfig;
+    const {tilesInfo, tileSize} = initConfig;
+
+    const info = tilesInfo[Math.floor(Math.random() * tilesInfo.length)];
 
     return {
         x: column * tileSize,
         y: row * tileSize,
-        bg: tilesBackgrounds[Math.floor(Math.random() * tilesBackgrounds.length)]
+        ...info
     };
 };

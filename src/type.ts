@@ -1,10 +1,45 @@
-export interface ITile {
-    x:number,
-    y:number,
+export enum TileGroup {
+    block5 = 'block_5',
+    block10 = 'block_10',
+    block20 = 'block_20',
+    block25 = 'block_25',
+    block50 = 'block_50',
+    block100 = 'block_100'
+}
+
+export interface ITileInfo {
+    group:TileGroup,
+    score:number,
     bg:string
 }
 
+export interface ITile extends ITileInfo {
+    x:number,
+    y:number
+}
+
 export type Board = Array<Array<ITile | null>>;
+
+// config
+
+export interface IInitConfig {
+    tileSize:number,
+    rowCount:number,
+    columnCount:number,
+    emptyTileBackground:string,
+    tilesInfo:Array<ITileInfo>
+}
+
+export interface IAnimateConfig {
+    tailFallingDownSpeed:number,
+    tailGrowingRate:number,
+    tailGrowingStartSize:number
+}
+
+export interface IGameConfig {
+    scoreTarget:number,
+    totalAvailableSteps:number
+}
 
 // growing
 
@@ -42,8 +77,9 @@ export type RemoveTiles = (props:{
     clickedTiles:{
         row:number,
         col:number
-    }
-}) => Board | null;
+    },
+    currentScore:number
+}) => null | {board:Board, score:number};
 
 export type TileFallingDown = (props:{
     board:Board,
@@ -57,5 +93,5 @@ export type AddNewTiles = (props:{
 
 // utils
 
-export type GetRandomBg = () => string;
+export type GenerateTileByRowAndColumn = (props:{row:number, column:number}) => ITile;
 export type GetTileRowColumnIndexesByXY = (x:number, y:number) => {row:number, column:number};
