@@ -47,7 +47,7 @@ export const animateConfig:IAnimateConfig = {
 
 // todo scoreTarget взависимости от кол-ва плиток
 export const gameConfig:IGameConfig = {
-    scoreTarget: 1000,
-    totalAvailableSteps: 20,
+    scoreTarget: initConfig.rowCount * initConfig.columnCount * 50,
+    totalAvailableSteps: initConfig.rowCount * initConfig.columnCount / 2,
     totalAvailableShuffling: 5
 };
