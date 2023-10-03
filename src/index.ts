@@ -1,24 +1,24 @@
 import {addNewTiles, tileFallingDown, initBoard, removeTiles} from '@scenes';
-import {getTileRowColumnIndexesByXY, pause} from '@utils';
+import {getRandomInt, getTileRowColumnIndexesByXY, pause} from '@utils';
 import {growNewTile, fallDownTiles} from '@drawing';
 import {initConfig, gameConfig} from './config';
 import {IDrawingAnimateService, ITile} from './type';
 
-// DOM
+// DOM elements
 
 const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
 const scoreValue = document.getElementById('scoreValue') as HTMLSpanElement;
 const stepsValue = document.getElementById('stepsValue') as HTMLSpanElement;
 const scoreTarget = document.getElementById('scoreTarget') as HTMLSpanElement;
-const shufflingValue = document.getElementById('shufflingValue') as HTMLSpanElement;
 const tilesInfoContainer = document.getElementById('tilesInfoContainer') as HTMLElement;
+const shuffleTilesButton = document.getElementById('shuffleTiles') as HTMLButtonElement;
+const teleportTilesButton = document.getElementById('teleportTiles') as HTMLButtonElement;
 
-// init changing
+// init render
 
 stepsValue.textContent = `${gameConfig.totalAvailableSteps}`;
 scoreTarget.textContent = `${gameConfig.scoreTarget}`;
-shufflingValue.textContent = `${gameConfig.totalAvailableShuffling}`;
 canvas.height = initConfig.tileSize * initConfig.rowCount;
 canvas.width = initConfig.tileSize * initConfig.columnCount;
 
@@ -73,6 +73,8 @@ let board = initBoard({growNewTile: DrawingAnimateService.growNewTile});
 let score = 0;
 let currentStepCount = gameConfig.totalAvailableSteps;
 
+// handlers
+
 const tilesHandler = async (e:MouseEvent) => {
     canvas.removeEventListener('click', tilesHandler);
 
@@ -116,6 +118,95 @@ const tilesHandler = async (e:MouseEvent) => {
         canvas.addEventListener('click', tilesHandler);
     }
 };
+const shuffleTilesHandler = async () => {
+    canvas.removeEventListener('click', tilesHandler);
+    shuffleTilesButton.disabled = true;
 
-// tile clicking
+    const flattenedBoard = board.flat() as Array<ITile>;
+
+    const shuffle2DArray = async (leftShuffles:number)=> {
+        if (leftShuffles === 0) return;
+
+        const firstIndex = getRandomInt(0, flattenedBoard.length - 1);
+        const secondIndex = getRandomInt(0, flattenedBoard.length - 1);
+
+        const x1 = flattenedBoard[firstIndex].x;
+        const y1 = flattenedBoard[firstIndex].y;
+        const x2 = flattenedBoard[secondIndex].x;
+        const y2 = flattenedBoard[secondIndex].y;
+
+        const image = new Image();
+
+        image.src = initConfig.emptyTileBackground;
+
+        // drawing
+        DrawingAnimateService.growNewTile({
+            constX: flattenedBoard[firstIndex].x,
+            constY: flattenedBoard[firstIndex].y,
+            bg: image
+        });
+        DrawingAnimateService.growNewTile({
+            constX: flattenedBoard[secondIndex].x,
+            constY: flattenedBoard[secondIndex].y,
+            bg: image
+        });
+
+        // todo динамически
+        await pause(250);
+
+        [flattenedBoard[firstIndex], flattenedBoard[secondIndex]] = [flattenedBoard[secondIndex], flattenedBoard[firstIndex]];
+
+        flattenedBoard[firstIndex].x = x1;
+        flattenedBoard[firstIndex].y = y1;
+        flattenedBoard[secondIndex].x = x2;
+        flattenedBoard[secondIndex].y= y2;
+
+        const image1 = new Image();
+        const image2 = new Image();
+
+        image1.src = flattenedBoard[firstIndex].bg;
+        image2.src = flattenedBoard[secondIndex].bg;
+
+        // drawing
+        DrawingAnimateService.growNewTile({
+            constX: flattenedBoard[firstIndex].x,
+            constY: flattenedBoard[firstIndex].y,
+            bg: image1
+        });
+        DrawingAnimateService.growNewTile({
+            constX: flattenedBoard[secondIndex].x,
+            constY: flattenedBoard[secondIndex].y,
+            bg: image2
+        });
+
+        // todo динамически
+        await pause(250);
+        leftShuffles--;
+        await shuffle2DArray(leftShuffles);
+    };
+
+    await shuffle2DArray(10);
+
+    // separating
+    const twoDimensionalArray = [];
+    const chunkSize = initConfig.columnCount;
+
+    for (let i = 0; i < flattenedBoard.length; i += chunkSize) {
+        const chunk = flattenedBoard.slice(i, i + chunkSize);
+        
+        twoDimensionalArray.push(chunk);
+    }
+
+    board = twoDimensionalArray;
+
+    canvas.addEventListener('click', tilesHandler);
+};
+const teleportTilesHandler = () => {
+
+};
+
+// event listening
+
 canvas.addEventListener('click', tilesHandler);
+shuffleTilesButton.addEventListener('click', shuffleTilesHandler);
+teleportTilesButton.addEventListener('click', teleportTilesHandler);

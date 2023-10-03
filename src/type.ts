@@ -97,3 +97,4 @@ export type AddNewTiles = (props:{
 
 export type GenerateTileByRowAndColumn = (props:{row:number, column:number}) => ITile;
 export type GetTileRowColumnIndexesByXY = (x:number, y:number) => {row:number, column:number};
+export type GetRandomInt = (from:number, to:number) => number;
