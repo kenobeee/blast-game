@@ -38,7 +38,8 @@ export interface IAnimateConfig {
 
 export interface IGameConfig {
     scoreTarget:number,
-    totalAvailableSteps:number
+    totalAvailableSteps:number,
+    totalAvailableShuffling:number
 }
 
 // growing

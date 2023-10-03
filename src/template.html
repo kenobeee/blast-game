@@ -2,29 +2,159 @@
 <html lang="en">
 <head>
     <title><%= htmlWebpackPlugin.options.title %></title>
+    <!--    base-->
+    <style>
+        *, *::after, *::before {
+            margin: 0;
+            padding: 0;
+
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+
+            line-height: 100%;
+        }
+
+        body {
+            scrollbar-width: auto;
+            -webkit-scrollbar: auto;
+        }
+
+        span {
+            display: block;
+        }
+
+        ul {list-style: none}
+
+        a, a:checked {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        input, button, textarea {
+            outline: none;
+            border: none;
+            -webkit-text-size-adjust: 100%;
+        }
+    </style>
+    <!--    fonts-->
+    <style>
+        @font-face {
+            font-family: 'minecraft';
+            src: url('assets/fonts/400.otf');
+            font-weight: 400;
+            font-style: normal;
+            font-display: fallback;
+        }
+        @font-face {
+            font-family: 'minecraft';
+            src: url('assets/fonts/700.otf');
+            font-weight: 700;
+            font-style: normal;
+            font-display: fallback;
+        }
+    </style>
+    <!--    other-->
+    <style>
+        body {
+            font-family: 'minecraft';
+            color: #fff;
+            font-size: 14px;
+        }
+        .main {
+            position: relative;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            width: 100vw;
+            height: 100vh;
+
+            background-image: url(assets/img/common/main_bg.png);
+            background-repeat: repeat;
+            /*background-size: contain;*/
+            background-position: center;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .canvas {
+            background-color: transparent;
+        }
+        .sidebar {
+            position: absolute;
+            top: 0;
+            right: 0;
+
+            padding: 2% 1%;
+
+            width: 14%;
+            height: 100%;
+
+            background-image: url("assets/img/common/sidebar_bg.jpg");
+            border-left: 4px solid rgb(172, 160, 160);
+            border-radius: 30px 0 0 30px;
+        }
+        .sidebar__inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .sidebar__pair {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            margin-top: 60px;
+        }
+        .sidebar__pair:first-child {
+            margin-top: 0;
+        }
+        .sidebar__pair--text {
+            font-size: 26px;
+            text-align: center;
+            text-shadow: #000 2px 2px;
+        }
+        .sidebar__pair--value {
+            margin-top: 20px;
+
+            font-size: 20px;
+            font-weight: 700;
+            text-shadow: #000 1px 1px;
+        }
+    </style>
 </head>
 <body>
-    <main id="main">
-        <canvas id="gameCanvas"></canvas>
-        <section class="score" id="scoreSection">
-            <div class="score__wrapper">
-                <span class="score__value" id="scoreValue">
-                    0
-                </span>
-                <span>
-                    ->
-                </span>
-                <span class="score_value" id="scoreTarget">
-                    0
-                </span>
-                <span>
-                    |
-                </span>
-                <span class="score__steps" id="stepsValue">
-                    0
-                </span>
+    <main class="main">
+        <div class="container">
+            <canvas class="canvas" id="gameCanvas"></canvas>
+        </div>
+        <div class="sidebar" id="scoreSection">
+            <div class="sidebar__inner">
+                <div class="sidebar__pair">
+                    <span class="sidebar__pair--text">Scored points</span>
+                    <span class="sidebar__pair--value" id="scoreValue">0</span>
+                </div>
+                <div class="sidebar__pair">
+                    <span class="sidebar__pair--text">Goal points</span>
+                    <span class="sidebar__pair--value" id="scoreTarget">0</span>
+                </div>
+                <div class="sidebar__pair">
+                    <span class="sidebar__pair--text">Steps left</span>
+                    <span class="sidebar__pair--value" id="stepsValue">0</span>
+                </div>
+                <div class="sidebar__pair">
+                    <span class="sidebar__pair--text">Shuffling left</span>
+                    <span class="sidebar__pair--value" id="shufflingValue">0</span>
+                </div>
             </div>
-        </section>
+        </div>
     </main>
 </body>
 </html>

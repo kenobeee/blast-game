@@ -11,11 +11,13 @@ const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
 const scoreValue = document.getElementById('scoreValue') as HTMLSpanElement;
 const stepsValue = document.getElementById('stepsValue') as HTMLSpanElement;
 const scoreTarget = document.getElementById('scoreTarget') as HTMLSpanElement;
+const shufflingValue = document.getElementById('shufflingValue') as HTMLSpanElement;
 
 // init changing
 
 stepsValue.textContent = `${gameConfig.totalAvailableSteps}`;
 scoreTarget.textContent = `${gameConfig.scoreTarget}`;
+shufflingValue.textContent = `${gameConfig.totalAvailableShuffling}`;
 canvas.height = initConfig.tileSize * initConfig.rowCount;
 canvas.width = initConfig.tileSize * initConfig.columnCount;
 

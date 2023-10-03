@@ -2,8 +2,8 @@ import {IAnimateConfig, IGameConfig, IInitConfig, TileGroup} from './type';
 
 export const initConfig:IInitConfig = {
     tileSize: 80,
-    rowCount: 5,
-    columnCount: 5,
+    rowCount: 10,
+    columnCount: 10,
     emptyTileBackground: require('../assets/img/tiles/empty.png'),
     tilesInfo: [
         {
@@ -45,7 +45,9 @@ export const animateConfig:IAnimateConfig = {
     tailGrowingStartSize: 0
 };
 
+// todo scoreTarget взависимости от кол-ва плиток
 export const gameConfig:IGameConfig = {
     scoreTarget: 1000,
-    totalAvailableSteps: 20
+    totalAvailableSteps: 20,
+    totalAvailableShuffling: 5
 };
