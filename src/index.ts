@@ -1,5 +1,5 @@
 import {addNewTiles, tileFallingDown, initBoard, removeTiles} from '@scenes';
-import {getRandomInt, getTileRowColumnIndexesByXY, pause} from '@utils';
+import {checkClusterAvailability, getRandomInt, getTileRowColumnIndexesByXY, pause} from '@utils';
 import {growNewTile, fallDownTiles} from '@drawing';
 import {initConfig, gameConfig} from './config';
 import {IDrawingAnimateService, ITile} from './type';
@@ -47,17 +47,18 @@ initConfig.tilesInfo.forEach(tile => createThenAppend(tile));
 
 const updateState = (newScoreQty:number) => {
     score = newScoreQty;
-    currentStepCount -= 1;
+    stepsLeft -= 1;
 
     scoreValue.textContent = `${newScoreQty}`;
-    stepsValue.textContent = `${currentStepCount}`;
+    stepsValue.textContent = `${stepsLeft}`;
 
-    if (currentStepCount !== 0) {
-        if (newScoreQty >= gameConfig.scoreTarget) disableCanvas();
-        else enableCanvas();
-    } else {
-        disableCanvas();
-    }
+    const isBoardHasCluster = checkClusterAvailability(board);
+    const isHasStillSteps = stepsLeft !== 0;
+    const isScoreNotYetFulled = newScoreQty < gameConfig.scoreTarget;
+    const isTilesShufflingNotYetUsed = shuffleTilesButton.disabled;
+
+    if (isHasStillSteps && isBoardHasCluster && (isScoreNotYetFulled || isTilesShufflingNotYetUsed)) enableCanvas();
+    else disableCanvas();
 };
 const disableCanvas = () => canvas.removeEventListener('click', tilesHandler);
 const enableCanvas = () => canvas.addEventListener('click', tilesHandler);
@@ -71,7 +72,7 @@ const DrawingAnimateService:IDrawingAnimateService = {
 
 let board = initBoard({growNewTile: DrawingAnimateService.growNewTile});
 let score = 0;
-let currentStepCount = gameConfig.totalAvailableSteps;
+let stepsLeft = gameConfig.totalAvailableSteps;
 
 // handlers
 
