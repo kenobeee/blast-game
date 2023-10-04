@@ -2,7 +2,7 @@ import {IAnimateConfig, IGameConfig, IInitConfig, TileGroup} from './type';
 
 export const initConfig:IInitConfig = {
     tileSize: 80,
-    totalRowsQty: 10,
+    totalRowsQty: 5,
     totalColumnQty: 10,
     emptyTileBackground: require('../assets/img/tiles/empty.png'),
     tilesInfo: [
@@ -60,5 +60,6 @@ const totalAvailableSteps = Math.ceil(scoreTarget / averageScorePerTile / initCo
 // todo scoreTarget взависимости от кол-ва плиток
 export const gameConfig:IGameConfig = {
     scoreTarget,
-    totalAvailableSteps
+    totalAvailableSteps,
+    shufflingQty: initConfig.totalRowsQty * initConfig.totalColumnQty
 };

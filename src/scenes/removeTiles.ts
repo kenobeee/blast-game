@@ -7,13 +7,13 @@ import {ITile, RemoveTiles} from '../type';
 export const removeTiles:RemoveTiles = (props) => {
     const {board, clickedTiles, growNewTile, currentScore} = props;
     const {row, col} = clickedTiles;
-    const {emptyTileBackground} = initConfig;
+    const {emptyTileBackground, totalRowsQty, totalColumnQty} = initConfig;
 
     const chosenGroup = board[col][row]?.group;
     const tilesForRemove:any = [];
     let updatedScore:number = currentScore;
 
-    const findAllSameColorAdjacentTiles = (currentRow:number, currentColumn:number) => {
+    const findAllSameColorAdjacentTiles = (currentColumn:number, currentRow:number) => {
         const currentTile = board[currentColumn][currentRow];
 
         const isDesiredGroup = currentTile?.group === chosenGroup;
@@ -21,9 +21,6 @@ export const removeTiles:RemoveTiles = (props) => {
 
         if (isDesiredGroup && isNewTile) {
             tilesForRemove.push(currentTile);
-
-            const numRows = board.length;
-            const numCols = board[0].length;
 
             const neighbors = [
                 {row: currentRow - 1, col: currentColumn},
@@ -34,18 +31,16 @@ export const removeTiles:RemoveTiles = (props) => {
 
             neighbors.forEach(neighbor => {
                 const {row: nextRow, col: nextColumn} = neighbor;
-                const isWithinBounds = nextRow >= 0 && nextRow < numRows && nextColumn >= 0 && nextColumn < numCols;
+                const isWithinBounds = nextRow >= 0 && nextRow < totalRowsQty && nextColumn >= 0 && nextColumn < totalColumnQty;
 
-                if (isWithinBounds) {
-                    findAllSameColorAdjacentTiles(nextRow, nextColumn);
-                }
+                if (isWithinBounds) findAllSameColorAdjacentTiles(nextColumn, nextRow);
             });
         }
 
         return;
     };
 
-    findAllSameColorAdjacentTiles(row, col);
+    findAllSameColorAdjacentTiles(col, row);
 
     if (tilesForRemove.length > 1) {
         tilesForRemove.forEach((tile:ITile) => {
@@ -68,7 +63,7 @@ export const removeTiles:RemoveTiles = (props) => {
                 });
             };
         });
-
+        
         return {board, score: updatedScore};
     } else {
         return null;

@@ -191,7 +191,7 @@ const shuffleTilesHandler = async () => {
         });
 
         // todo динамически
-        await pause(250);
+        await pause(25);
 
         [flattenedBoard[firstIndex], flattenedBoard[secondIndex]] = [flattenedBoard[secondIndex], flattenedBoard[firstIndex]];
 
@@ -219,16 +219,16 @@ const shuffleTilesHandler = async () => {
         });
 
         // todo динамически
-        await pause(250);
+        await pause(25);
         leftShuffles--;
         await shuffle2DArray(leftShuffles);
     };
 
-    await shuffle2DArray(10);
+    await shuffle2DArray(gameConfig.shufflingQty);
 
     // separating
     const twoDimensionalArray = [];
-    const chunkSize = initConfig.totalColumnQty;
+    const chunkSize = initConfig.totalRowsQty;
 
     for (let i = 0; i < flattenedBoard.length; i += chunkSize) {
         const chunk = flattenedBoard.slice(i, i + chunkSize);
