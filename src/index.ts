@@ -14,6 +14,9 @@ const scoreTarget = document.getElementById('scoreTarget') as HTMLSpanElement;
 const tilesInfoContainer = document.getElementById('tilesInfoContainer') as HTMLElement;
 const shuffleTilesButton = document.getElementById('shuffleTiles') as HTMLButtonElement;
 const teleportTilesButton = document.getElementById('teleportTiles') as HTMLButtonElement;
+const finishGameModal = document.getElementById('finishGameModal') as HTMLDivElement;
+const finishGameModalTitle = document.getElementById('finishGameModalTitle') as HTMLElement;
+const finishGameModalRepeatBtn = document.getElementById('finishGameModalRepeatBtn') as HTMLButtonElement;
 
 // init render
 
@@ -45,20 +48,55 @@ initConfig.tilesInfo.forEach(tile => createThenAppend(tile));
 
 // render foo
 
-const updateState = (newScoreQty:number) => {
+const updateScoreField = (score:number, steps:number) => {
+    scoreValue.textContent = `${score}`;
+    stepsValue.textContent = `${steps}`;
+};
+const step = (newScoreQty:number) => {
     score = newScoreQty;
     stepsLeft -= 1;
 
-    scoreValue.textContent = `${newScoreQty}`;
-    stepsValue.textContent = `${stepsLeft}`;
+    updateScoreField(newScoreQty, stepsLeft);
 
     const isBoardHasCluster = checkClusterAvailability(board);
-    const isHasStillSteps = stepsLeft !== 0;
-    const isScoreNotYetFulled = newScoreQty < gameConfig.scoreTarget;
-    const isTilesShufflingNotYetUsed = shuffleTilesButton.disabled;
+    const isHasSteps = stepsLeft > 0;
+    const isTilesShufflingAlreadyUsed = shuffleTilesButton.disabled;
 
-    if (isHasStillSteps && isBoardHasCluster && (isScoreNotYetFulled || isTilesShufflingNotYetUsed)) enableCanvas();
-    else disableCanvas();
+    if (newScoreQty >= gameConfig.scoreTarget) {
+        finishGame('win');
+        
+        return;
+    }
+    else if ((!isBoardHasCluster && isTilesShufflingAlreadyUsed) || !isHasSteps) {
+        finishGame('lose');
+        
+        return;
+    }
+
+    enableCanvas();
+};
+const finishGame = async (result:'win' | 'lose') => {
+    disableCanvas();
+    await pause(100);
+
+    // inserted text
+    finishGameModalTitle.textContent = result === 'win' ? 'You won!' : 'You lose.';
+    // open modal
+    finishGameModal.classList.add('modal--opened');
+};
+const restartGame = async () => {
+    // close modal
+    finishGameModal.classList.remove('modal--opened');
+
+    await pause(100);
+
+    score = 0;
+    stepsLeft = gameConfig.totalAvailableSteps;
+    board = initBoard({growNewTile: DrawingAnimateService.growNewTile});
+    shuffleTilesButton.disabled = false;
+
+    updateScoreField(score, stepsLeft);
+    enableCanvas();
 };
 const disableCanvas = () => canvas.removeEventListener('click', tilesHandler);
 const enableCanvas = () => canvas.addEventListener('click', tilesHandler);
@@ -70,9 +108,9 @@ const DrawingAnimateService:IDrawingAnimateService = {
 
 // vars
 
-let board = initBoard({growNewTile: DrawingAnimateService.growNewTile});
 let score = 0;
 let stepsLeft = gameConfig.totalAvailableSteps;
+let board = initBoard({growNewTile: DrawingAnimateService.growNewTile});
 
 // handlers
 
@@ -111,7 +149,7 @@ const tilesHandler = async (e:MouseEvent) => {
         // todo сделать динамическим значение
         await pause(250);
 
-        updateState(updated.score);
+        step(updated.score);
     } else {
         enableCanvas();
     }
@@ -197,7 +235,7 @@ const shuffleTilesHandler = async () => {
 
     board = twoDimensionalArray;
 
-    enableCanvas();
+    checkClusterAvailability(board) ? finishGame('lose') : enableCanvas();
 };
 const teleportTilesHandler = () => {
     disableCanvas();
@@ -210,3 +248,4 @@ const teleportTilesHandler = () => {
 enableCanvas();
 shuffleTilesButton.addEventListener('click', shuffleTilesHandler);
 teleportTilesButton.addEventListener('click', teleportTilesHandler);
+finishGameModalRepeatBtn.addEventListener('click', restartGame);
