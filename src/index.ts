@@ -98,8 +98,8 @@ const restartGame = async () => {
     updateScoreField(score, stepsLeft);
     enableCanvas();
 };
-const disableCanvas = () => canvas.removeEventListener('click', tilesHandler);
-const enableCanvas = () => canvas.addEventListener('click', tilesHandler);
+const disableCanvas = () => canvas.removeEventListener('click', canvasHandler);
+const enableCanvas = () => canvas.addEventListener('click', canvasHandler);
 const DrawingAnimateService:IDrawingAnimateService = {
     growNewTile: props => growNewTile({...props, ctx}),
     fallDownTiles: props => fallDownTiles({...props, ctx})
@@ -113,13 +113,13 @@ let board = initBoard({growNewTile: DrawingAnimateService.growNewTile});
 
 // handlers
 
-const tilesHandler = async (e:MouseEvent) => {
-    disableCanvas();
-
+const canvasHandler = async (e:MouseEvent) => {
     const rect = canvas.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
     const {column, row} = getTileRowColumnIndexesByXY(mouseX, mouseY);
+
+    disableCanvas();
 
     const updated = removeTiles({
         board,
@@ -139,7 +139,7 @@ const tilesHandler = async (e:MouseEvent) => {
             board: updated.board,
             fallDownTiles: DrawingAnimateService.fallDownTiles
         });
-       
+
         board = addNewTiles({
             board,
             growNewTile: DrawingAnimateService.growNewTile
@@ -149,9 +149,11 @@ const tilesHandler = async (e:MouseEvent) => {
         await pause(250);
 
         step(updated.score);
-    } else {
-        enableCanvas();
+
+        return;
     }
+
+    enableCanvas();
 };
 const shuffleTilesHandler = async () => {
     disableCanvas();
@@ -237,9 +239,75 @@ const shuffleTilesHandler = async () => {
     checkClusterAvailability(board) ? enableCanvas() : finishGame('lose');
 };
 const teleportTilesHandler = () => {
+    teleportTilesButton.disabled = true;
     disableCanvas();
 
-    enableCanvas();
+    let cache:{column:number, row:number} | undefined = undefined;
+
+    const getCoords = async (e:MouseEvent) => {
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        const {column, row} = getTileRowColumnIndexesByXY(mouseX, mouseY);
+
+        if (cache) {
+            const column2 = cache.column;
+            const row2 = cache.row;
+
+            const tile1 = board[column][row] as ITile;
+            const tile2 = board[column2][row2] as  ITile;
+
+            const image = new Image();
+
+            image.src = initConfig.emptyTileBackground;
+
+            // drawing
+            DrawingAnimateService.growNewTile({
+                constX: tile1.x,
+                constY: tile1.y,
+                bg: image
+            });
+            DrawingAnimateService.growNewTile({
+                constX: tile2.x,
+                constY: tile2.y,
+                bg: image
+            });
+
+            // todo динамически
+            await pause(250);
+
+            board[column][row] = {...tile2, y: tile1.y, x: tile1.x};
+            board[column2][row2] = {...tile1, y: tile2.y, x: tile2.x};
+
+            const image1 = new Image();
+            const image2 = new Image();
+
+            image1.src = tile2.bg;
+            image2.src = tile1.bg;
+
+            // drawing
+            DrawingAnimateService.growNewTile({
+                constX: tile1.x,
+                constY: tile1.y,
+                bg: image1
+            });
+            DrawingAnimateService.growNewTile({
+                constX: tile2.x,
+                constY: tile2.y,
+                bg: image2
+            });
+
+            // todo динамически
+            await pause(250);
+
+            canvas.removeEventListener('click', getCoords);
+            enableCanvas();
+        } else {
+            cache = {column, row};
+        }
+    };
+
+    canvas.addEventListener('click', getCoords);
 };
 
 // event listening
