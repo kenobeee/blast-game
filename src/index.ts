@@ -234,7 +234,7 @@ const shuffleTilesHandler = async () => {
 
     board = twoDimensionalArray;
 
-    checkClusterAvailability(board) ? finishGame('lose') : enableCanvas();
+    checkClusterAvailability(board) ? enableCanvas() : finishGame('lose');
 };
 const teleportTilesHandler = () => {
     disableCanvas();
