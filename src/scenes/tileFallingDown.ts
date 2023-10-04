@@ -4,12 +4,12 @@ import {pause} from '@utils';
 
 export const tileFallingDown:TileFallingDown = async (props) => {
     const {board, fallDownTiles} = props;
-    const {columnCount, rowCount, tileSize} = initConfig;
+    const {totalColumnQty, totalRowsQty, tileSize} = initConfig;
     const updatedBoard:Array<Array<ITile | null>> = [];
     let maxShift:number = 0;
 
     const columnAsyncCycle = (column:number) => {
-        if (column === columnCount) return;
+        if (column === totalColumnQty) return;
 
         const currentColumn = board[column];
         const columnHasEmptyTiles = currentColumn.includes(null);
@@ -22,7 +22,7 @@ export const tileFallingDown:TileFallingDown = async (props) => {
             const newColumn = empties.concat(tiles);
 
             const rowAsyncCycle = (row:number, isTopmostTile:boolean) => {
-                if (row === rowCount) return;
+                if (row === totalRowsQty) return;
 
                 const newIndex = newColumn.indexOf(currentColumn[row]);
 

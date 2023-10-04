@@ -4,9 +4,9 @@ import {generateTileByRowAndColumn} from '@utils';
 
 export const addNewTiles:AddNewTiles = (props) => {
     const {board, growNewTile} = props;
-    const {columnCount} = initConfig;
+    const {totalColumnQty} = initConfig;
 
-    for (let column = 0; column < columnCount; column++) {
+    for (let column = 0; column < totalColumnQty; column++) {
         const currentColumn = board[column];
         const emptyTilesCount = currentColumn.filter(tile => tile === null).length;
 

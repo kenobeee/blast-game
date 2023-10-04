@@ -6,16 +6,16 @@ import {InitBoard, ITile} from '../type';
 
 export const initBoard:InitBoard = (props) => {
     const {growNewTile} = props;
-    const {rowCount, columnCount} = initConfig;
+    const {totalRowsQty, totalColumnQty} = initConfig;
 
     const board:Array<Array<ITile>> = [];
 
     // first making column arr
     // [[column], [column], ...]
     // column consists of rows indexes
-    for (let column = 0; column < columnCount; column++) {
+    for (let column = 0; column < totalColumnQty; column++) {
         board[column] = [];
-        for (let row = 0; row < rowCount; row++) {
+        for (let row = 0; row < totalRowsQty; row++) {
             const newTile = generateTileByRowAndColumn({row, column});
             const image = new Image();
 

@@ -25,8 +25,8 @@ export type Board = Array<Array<ITile | null>>;
 
 export interface IInitConfig {
     tileSize:number,
-    rowCount:number,
-    columnCount:number,
+    totalRowsQty:number,
+    totalColumnQty:number,
     emptyTileBackground:string,
     tilesInfo:Array<ITileInfo>
 }

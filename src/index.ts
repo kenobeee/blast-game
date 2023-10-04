@@ -19,8 +19,8 @@ const teleportTilesButton = document.getElementById('teleportTiles') as HTMLButt
 
 stepsValue.textContent = `${gameConfig.totalAvailableSteps}`;
 scoreTarget.textContent = `${gameConfig.scoreTarget}`;
-canvas.height = initConfig.tileSize * initConfig.rowCount;
-canvas.width = initConfig.tileSize * initConfig.columnCount;
+canvas.height = initConfig.tileSize * initConfig.totalRowsQty;
+canvas.width = initConfig.tileSize * initConfig.totalColumnQty;
 
 const createThenAppend = (props:Pick<ITile, 'view' | 'score'>) => {
     const {view, score} = props;
@@ -187,7 +187,7 @@ const shuffleTilesHandler = async () => {
 
     // separating
     const twoDimensionalArray = [];
-    const chunkSize = initConfig.columnCount;
+    const chunkSize = initConfig.totalColumnQty;
 
     for (let i = 0; i < flattenedBoard.length; i += chunkSize) {
         const chunk = flattenedBoard.slice(i, i + chunkSize);
