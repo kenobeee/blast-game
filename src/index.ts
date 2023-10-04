@@ -61,13 +61,14 @@ const step = (newScoreQty:number) => {
     const isBoardHasCluster = checkClusterAvailability(board);
     const isHasSteps = stepsLeft > 0;
     const isTilesShufflingAlreadyUsed = shuffleTilesButton.disabled;
+    const isTilesTeleportingAlreadyUsed = shuffleTilesButton.disabled;
 
     if (newScoreQty >= gameConfig.scoreTarget) {
         finishGame('win');
         
         return;
     }
-    else if ((!isBoardHasCluster && isTilesShufflingAlreadyUsed) || !isHasSteps) {
+    else if ((!isBoardHasCluster && isTilesShufflingAlreadyUsed && isTilesTeleportingAlreadyUsed) || !isHasSteps) {
         finishGame('lose');
         
         return;
@@ -94,6 +95,7 @@ const restartGame = async () => {
     stepsLeft = gameConfig.totalAvailableSteps;
     board = initBoard({growNewTile: DrawingAnimateService.growNewTile});
     shuffleTilesButton.disabled = false;
+    teleportTilesButton.disabled = false;
 
     updateScoreField(score, stepsLeft);
     enableCanvas();
