@@ -19,16 +19,16 @@ export const initConfig:IInitConfig = {
             view: require('../assets/img/tiles/3d_block_10.png')
         },
         {
-            group: TileGroup.block20,
-            score: 20,
-            bg: require('../assets/img/tiles/2d_block_20.png'),
-            view: require('../assets/img/tiles/3d_block_20.png')
+            group: TileGroup.block15,
+            score: 15,
+            bg: require('../assets/img/tiles/2d_block_15.png'),
+            view: require('../assets/img/tiles/3d_block_15.png')
         },
         {
-            group: TileGroup.block25,
-            score: 25,
-            bg: require('../assets/img/tiles/2d_block_25.png'),
-            view: require('../assets/img/tiles/3d_block_25.png')
+            group: TileGroup.block30,
+            score: 30,
+            bg: require('../assets/img/tiles/2d_block_30.png'),
+            view: require('../assets/img/tiles/3d_block_30.png')
         },
         {
             group: TileGroup.block50,
@@ -51,9 +51,14 @@ export const animateConfig:IAnimateConfig = {
     tailGrowingStartSize: 0
 };
 
+const availableScores = initConfig.tilesInfo.map(tile => tile.score);
+const totalTiles = initConfig.totalRowsQty * initConfig.totalColumnQty;
+const averageScorePerTile = availableScores.reduce((acc, score) => acc + score, 0) / availableScores.length;
+const scoreTarget = totalTiles * averageScorePerTile;
+const totalAvailableSteps = Math.ceil(scoreTarget / averageScorePerTile / initConfig.tilesInfo.length);
+
 // todo scoreTarget взависимости от кол-ва плиток
 export const gameConfig:IGameConfig = {
-    scoreTarget: initConfig.totalRowsQty * initConfig.totalColumnQty * 50,
-    totalAvailableSteps: initConfig.totalRowsQty * initConfig.totalColumnQty / 2,
-    totalAvailableShuffling: 5
+    scoreTarget,
+    totalAvailableSteps
 };

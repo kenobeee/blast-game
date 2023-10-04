@@ -100,7 +100,6 @@ const restartGame = async () => {
 };
 const disableCanvas = () => canvas.removeEventListener('click', tilesHandler);
 const enableCanvas = () => canvas.addEventListener('click', tilesHandler);
-
 const DrawingAnimateService:IDrawingAnimateService = {
     growNewTile: props => growNewTile({...props, ctx}),
     fallDownTiles: props => fallDownTiles({...props, ctx})

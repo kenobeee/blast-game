@@ -1,8 +1,8 @@
 export enum TileGroup {
     block5 = 'block_5',
     block10 = 'block_10',
-    block20 = 'block_20',
-    block25 = 'block_25',
+    block15 = 'block_15',
+    block30 = 'block_30',
     block50 = 'block_50',
     block100 = 'block_100'
 }
@@ -39,8 +39,7 @@ export interface IAnimateConfig {
 
 export interface IGameConfig {
     scoreTarget:number,
-    totalAvailableSteps:number,
-    totalAvailableShuffling:number
+    totalAvailableSteps:number
 }
 
 // growing
