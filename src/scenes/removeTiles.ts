@@ -1,11 +1,10 @@
 import {initConfig} from '../config';
-
 import {getTileRowColumnIndexesByXY} from '@utils';
-
+import {growNewTile} from '@drawing';
 import {ITile, RemoveTiles} from '../type';
 
 export const removeTiles:RemoveTiles = (props) => {
-    const {board, clickedTiles, growNewTile, currentScore} = props;
+    const {board, clickedTiles, currentScore} = props;
     const {row, col} = clickedTiles;
     const {emptyTileBackground, totalRowsQty, totalColumnQty} = initConfig;
 

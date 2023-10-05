@@ -1,9 +1,10 @@
-import {ITile, TileFallingDown} from '../type';
 import {animateConfig, initConfig} from 'config';
 import {pause} from '@utils';
+import {fallDownTiles} from '@drawing';
+import {ITile, TileFallingDown} from '../type';
 
 export const tileFallingDown:TileFallingDown = async (props) => {
-    const {board, fallDownTiles} = props;
+    const {board} = props;
     const {totalColumnQty, totalRowsQty, tileSize} = initConfig;
     const updatedBoard:Array<Array<ITile | null>> = [];
     let maxShift:number = 0;

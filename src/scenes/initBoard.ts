@@ -1,11 +1,12 @@
 import {initConfig} from '../config';
 
 import {generateTileByRowAndColumn} from '@utils';
+import {growNewTile} from '@drawing';
 
 import {InitBoard, ITile} from '../type';
 
-export const initBoard:InitBoard = (props) => {
-    const {growNewTile} = props;
+export const initBoard:InitBoard = () => {
+    // const {growNewTile} = props;
     const {totalRowsQty, totalColumnQty} = initConfig;
 
     const board:Array<Array<ITile>> = [];

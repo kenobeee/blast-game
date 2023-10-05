@@ -1,5 +1,5 @@
 import {initConfig, gameConfig} from './config';
-import {growNewTile, fallDownTiles} from '@drawing';
+import {growNewTile} from '@drawing';
 import {
     addNewTiles,
     tileFallingDown,
@@ -13,7 +13,6 @@ import {
     getTileRowColumnIndexesByXY,
 } from '@utils';
 import {
-    ctx,
     canvas,
     scoreValue,
     stepsValue,
@@ -25,7 +24,7 @@ import {
     teleportTilesButton,
     finishGameModalRepeatBtn
 } from './components';
-import {IDrawingAnimateService, ITile} from './type';
+import {ITile} from './type';
 
 const {tileSize, totalColumnQty, totalRowsQty, tilesInfo, emptyTileBackground} = initConfig;
 const {totalAvailableSteps, scoreTarget, shufflingQty} = gameConfig;
@@ -110,7 +109,7 @@ const restartGame = async () => {
 
     score = 0;
     stepsLeft = totalAvailableSteps;
-    board = initBoard({growNewTile: DrawingAnimateService.growNewTile});
+    board = initBoard();
     shuffleTilesButton.disabled = false;
     teleportTilesButton.disabled = false;
 
@@ -119,16 +118,12 @@ const restartGame = async () => {
 };
 const disableCanvas = () => canvas.removeEventListener('click', canvasHandler);
 const enableCanvas = () => canvas.addEventListener('click', canvasHandler);
-const DrawingAnimateService:IDrawingAnimateService = {
-    growNewTile: props => growNewTile({...props, ctx}),
-    fallDownTiles: props => fallDownTiles({...props, ctx})
-};
 
 // vars
 
 let score = 0;
 let stepsLeft = totalAvailableSteps;
-let board = initBoard({growNewTile: DrawingAnimateService.growNewTile});
+let board = initBoard();
 
 // handlers
 
@@ -142,7 +137,6 @@ const canvasHandler = async (e:MouseEvent) => {
 
     const updated = removeTiles({
         board,
-        growNewTile: DrawingAnimateService.growNewTile,
         clickedTiles: {
             row: row,
             col: column
@@ -155,13 +149,11 @@ const canvasHandler = async (e:MouseEvent) => {
         await pause(250);
 
         board = await tileFallingDown({
-            board: updated.board,
-            fallDownTiles: DrawingAnimateService.fallDownTiles
+            board: updated.board
         });
 
         board = addNewTiles({
-            board,
-            growNewTile: DrawingAnimateService.growNewTile
+            board
         });
 
         // todo сделать динамическим значение
@@ -196,12 +188,12 @@ const shuffleTilesButtonHandler = async () => {
         image.src = emptyTileBackground;
 
         // drawing
-        DrawingAnimateService.growNewTile({
+        growNewTile({
             constX: flattenedBoard[firstIndex].x,
             constY: flattenedBoard[firstIndex].y,
             bg: image
         });
-        DrawingAnimateService.growNewTile({
+        growNewTile({
             constX: flattenedBoard[secondIndex].x,
             constY: flattenedBoard[secondIndex].y,
             bg: image
@@ -224,12 +216,12 @@ const shuffleTilesButtonHandler = async () => {
         image2.src = flattenedBoard[secondIndex].bg;
 
         // drawing
-        DrawingAnimateService.growNewTile({
+        growNewTile({
             constX: flattenedBoard[firstIndex].x,
             constY: flattenedBoard[firstIndex].y,
             bg: image1
         });
-        DrawingAnimateService.growNewTile({
+        growNewTile({
             constX: flattenedBoard[secondIndex].x,
             constY: flattenedBoard[secondIndex].y,
             bg: image2
@@ -281,12 +273,12 @@ const teleportTilesHandler = () => {
             image.src = emptyTileBackground;
 
             // drawing
-            DrawingAnimateService.growNewTile({
+            growNewTile({
                 constX: tile1.x,
                 constY: tile1.y,
                 bg: image
             });
-            DrawingAnimateService.growNewTile({
+            growNewTile({
                 constX: tile2.x,
                 constY: tile2.y,
                 bg: image
@@ -305,12 +297,12 @@ const teleportTilesHandler = () => {
             image2.src = tile1.bg;
 
             // drawing
-            DrawingAnimateService.growNewTile({
+            growNewTile({
                 constX: tile1.x,
                 constY: tile1.y,
                 bg: image1
             });
-            DrawingAnimateService.growNewTile({
+            growNewTile({
                 constX: tile2.x,
                 constY: tile2.y,
                 bg: image2

@@ -1,9 +1,9 @@
+import {animateConfig, initConfig} from '../config';
+import {ctx} from '../components';
 import {GrowNewTileP} from '../type';
 
-import {animateConfig, initConfig} from '../config';
-
 export const growNewTile = (props:GrowNewTileP) => {
-    const {constX, constY, bg, ctx} = props;
+    const {constX, constY, bg} = props;
     const {tileSize} = initConfig;
     const {tailGrowingRate, tailGrowingStartSize} = animateConfig;
     let {startSize = tailGrowingStartSize} = props;
@@ -20,5 +20,5 @@ export const growNewTile = (props:GrowNewTileP) => {
 
     if (startSize < tileSize)
         requestAnimationFrame(() =>
-            growNewTile({constX, constY, startSize, bg, ctx}));
+            growNewTile({constX, constY, startSize, bg}));
 };

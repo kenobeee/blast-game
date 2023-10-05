@@ -49,8 +49,7 @@ export type GrowNewTileP = {
     constX:number,
     constY:number,
     startSize?:number,
-    bg:HTMLImageElement,
-    ctx:CanvasRenderingContext2D
+    bg:HTMLImageElement
 };
 
 export type FallDownTilesP = {
@@ -58,24 +57,15 @@ export type FallDownTilesP = {
     startY:number,
     finishY:number,
     bg:HTMLImageElement,
-    ctx:CanvasRenderingContext2D,
     isTopmostTile:boolean
 };
 
-export interface IDrawingAnimateService {
-    growNewTile:(props:Omit<GrowNewTileP, 'ctx'>) => void,
-    fallDownTiles:(props:Omit<FallDownTilesP, 'ctx'>) => void,
-}
-
 // scene
 
-export type InitBoard = (props:{
-    growNewTile:IDrawingAnimateService['growNewTile']
-}) => Board;
+export type InitBoard = () => Board;
 
 export type RemoveTiles = (props:{
     board:Board,
-    growNewTile:IDrawingAnimateService['growNewTile']
     clickedTiles:{
         row:number,
         col:number
@@ -84,13 +74,11 @@ export type RemoveTiles = (props:{
 }) => null | {board:Board, score:number};
 
 export type TileFallingDown = (props:{
-    board:Board,
-    fallDownTiles:IDrawingAnimateService['fallDownTiles']
+    board:Board
 }) => Promise<Board>;
 
 export type AddNewTiles = (props:{
-    board:Board,
-    growNewTile:IDrawingAnimateService['growNewTile']
+    board:Board
 }) => Board;
 
 // utils

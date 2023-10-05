@@ -1,9 +1,10 @@
 import {AddNewTiles} from '../type';
 import {initConfig} from '../config';
 import {generateTileByRowAndColumn} from '@utils';
+import {growNewTile} from '@drawing';
 
 export const addNewTiles:AddNewTiles = (props) => {
-    const {board, growNewTile} = props;
+    const {board} = props;
     const {totalColumnQty} = initConfig;
 
     for (let column = 0; column < totalColumnQty; column++) {
