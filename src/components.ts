@@ -1,0 +1,11 @@
+export const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
+export const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+export const scoreValue = document.getElementById('scoreValue') as HTMLSpanElement;
+export const stepsValue = document.getElementById('stepsValue') as HTMLSpanElement;
+export const scoreTargetValue = document.getElementById('scoreTargetValue') as HTMLSpanElement;
+export const tilesInfoContainer = document.getElementById('tilesInfoContainer') as HTMLElement;
+export const shuffleTilesButton = document.getElementById('shuffleTiles') as HTMLButtonElement;
+export const teleportTilesButton = document.getElementById('teleportTiles') as HTMLButtonElement;
+export const finishGameModal = document.getElementById('finishGameModal') as HTMLDivElement;
+export const finishGameModalTitle = document.getElementById('finishGameModalTitle') as HTMLElement;
+export const finishGameModalRepeatBtn = document.getElementById('finishGameModalRepeatBtn') as HTMLButtonElement;

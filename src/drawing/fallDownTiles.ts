@@ -21,5 +21,6 @@ export const fallDownTiles = (props:FallDownTilesP) => {
     ctx.drawImage(bg, constX, startY, tileSize, tileSize);
 
     if (startY < finishY)
-        requestAnimationFrame(() => fallDownTiles({finishY, constX, startY, bg, ctx, isTopmostTile}));
+        requestAnimationFrame(() =>
+            fallDownTiles({finishY, constX, startY, bg, ctx, isTopmostTile}));
 };

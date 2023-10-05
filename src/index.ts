@@ -1,50 +1,67 @@
-import {addNewTiles, tileFallingDown, initBoard, removeTiles} from '@scenes';
-import {checkClusterAvailability, getRandomInt, getTileRowColumnIndexesByXY, pause} from '@utils';
-import {growNewTile, fallDownTiles} from '@drawing';
 import {initConfig, gameConfig} from './config';
+import {growNewTile, fallDownTiles} from '@drawing';
+import {
+    addNewTiles,
+    tileFallingDown,
+    initBoard,
+    removeTiles
+} from '@scenes';
+import {
+    pause,
+    getRandomInt,
+    checkClusterAvailability,
+    getTileRowColumnIndexesByXY,
+} from '@utils';
+import {
+    ctx,
+    canvas,
+    scoreValue,
+    stepsValue,
+    scoreTargetValue,
+    finishGameModal,
+    shuffleTilesButton,
+    tilesInfoContainer,
+    finishGameModalTitle,
+    teleportTilesButton,
+    finishGameModalRepeatBtn
+} from './components';
 import {IDrawingAnimateService, ITile} from './type';
 
-// DOM elements
+const {tileSize, totalColumnQty, totalRowsQty, tilesInfo, emptyTileBackground} = initConfig;
+const {totalAvailableSteps, scoreTarget, shufflingQty} = gameConfig;
 
-const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
-const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
-const scoreValue = document.getElementById('scoreValue') as HTMLSpanElement;
-const stepsValue = document.getElementById('stepsValue') as HTMLSpanElement;
-const scoreTarget = document.getElementById('scoreTarget') as HTMLSpanElement;
-const tilesInfoContainer = document.getElementById('tilesInfoContainer') as HTMLElement;
-const shuffleTilesButton = document.getElementById('shuffleTiles') as HTMLButtonElement;
-const teleportTilesButton = document.getElementById('teleportTiles') as HTMLButtonElement;
-const finishGameModal = document.getElementById('finishGameModal') as HTMLDivElement;
-const finishGameModalTitle = document.getElementById('finishGameModalTitle') as HTMLElement;
-const finishGameModalRepeatBtn = document.getElementById('finishGameModalRepeatBtn') as HTMLButtonElement;
+const init = () => {
+    stepsValue.textContent = `${totalAvailableSteps}`;
+    scoreTargetValue.textContent = `${scoreTarget}`;
+    canvas.height = tileSize * totalRowsQty;
+    canvas.width = tileSize * totalColumnQty;
 
-// init render
+    const createThenAppend = (props:Pick<ITile, 'view' | 'score'>) => {
+        const {view, score} = props;
+        const wrapper = document.createElement('div');
+        const img = document.createElement('span');
+        const text = document.createElement('span');
 
-stepsValue.textContent = `${gameConfig.totalAvailableSteps}`;
-scoreTarget.textContent = `${gameConfig.scoreTarget}`;
-canvas.height = initConfig.tileSize * initConfig.totalRowsQty;
-canvas.width = initConfig.tileSize * initConfig.totalColumnQty;
+        wrapper.className = 'sidebar__pair';
+        img.className = 'sidebar__img';
+        text.className = 'sidebar__text';
 
-const createThenAppend = (props:Pick<ITile, 'view' | 'score'>) => {
-    const {view, score} = props;
-    const wrapper = document.createElement('div');
-    const img = document.createElement('span');
-    const text = document.createElement('span');
+        text.textContent = `${score}`;
+        img.style.backgroundImage = `url(${view})`;
 
-    wrapper.className = 'sidebar__pair';
-    img.className = 'sidebar__img';
-    text.className = 'sidebar__text';
+        wrapper.appendChild(img);
+        wrapper.appendChild(text);
 
-    text.textContent = `${score}`;
-    img.style.backgroundImage = `url(${view})`;
+        tilesInfoContainer.appendChild(wrapper);
+    };
 
-    wrapper.appendChild(img);
-    wrapper.appendChild(text);
+    tilesInfo.forEach(tile => createThenAppend(tile));
 
-    tilesInfoContainer.appendChild(wrapper);
+    enableCanvas();
+    shuffleTilesButton.addEventListener('click', shuffleTilesButtonHandler);
+    teleportTilesButton.addEventListener('click', teleportTilesHandler);
+    finishGameModalRepeatBtn.addEventListener('click', restartGame);
 };
-
-initConfig.tilesInfo.forEach(tile => createThenAppend(tile));
 
 // render foo
 
@@ -63,7 +80,7 @@ const step = (newScoreQty:number) => {
     const isTilesShufflingAlreadyUsed = shuffleTilesButton.disabled;
     const isTilesTeleportingAlreadyUsed = shuffleTilesButton.disabled;
 
-    if (newScoreQty >= gameConfig.scoreTarget) {
+    if (newScoreQty >= scoreTarget) {
         finishGame('win');
         
         return;
@@ -92,7 +109,7 @@ const restartGame = async () => {
     await pause(100);
 
     score = 0;
-    stepsLeft = gameConfig.totalAvailableSteps;
+    stepsLeft = totalAvailableSteps;
     board = initBoard({growNewTile: DrawingAnimateService.growNewTile});
     shuffleTilesButton.disabled = false;
     teleportTilesButton.disabled = false;
@@ -110,7 +127,7 @@ const DrawingAnimateService:IDrawingAnimateService = {
 // vars
 
 let score = 0;
-let stepsLeft = gameConfig.totalAvailableSteps;
+let stepsLeft = totalAvailableSteps;
 let board = initBoard({growNewTile: DrawingAnimateService.growNewTile});
 
 // handlers
@@ -157,7 +174,7 @@ const canvasHandler = async (e:MouseEvent) => {
 
     enableCanvas();
 };
-const shuffleTilesHandler = async () => {
+const shuffleTilesButtonHandler = async () => {
     disableCanvas();
     shuffleTilesButton.disabled = true;
 
@@ -176,7 +193,7 @@ const shuffleTilesHandler = async () => {
 
         const image = new Image();
 
-        image.src = initConfig.emptyTileBackground;
+        image.src = emptyTileBackground;
 
         // drawing
         DrawingAnimateService.growNewTile({
@@ -224,11 +241,11 @@ const shuffleTilesHandler = async () => {
         await shuffle2DArray(leftShuffles);
     };
 
-    await shuffle2DArray(gameConfig.shufflingQty);
+    await shuffle2DArray(shufflingQty);
 
     // separating
     const twoDimensionalArray = [];
-    const chunkSize = initConfig.totalRowsQty;
+    const chunkSize = totalRowsQty;
 
     for (let i = 0; i < flattenedBoard.length; i += chunkSize) {
         const chunk = flattenedBoard.slice(i, i + chunkSize);
@@ -261,7 +278,7 @@ const teleportTilesHandler = () => {
 
             const image = new Image();
 
-            image.src = initConfig.emptyTileBackground;
+            image.src = emptyTileBackground;
 
             // drawing
             DrawingAnimateService.growNewTile({
@@ -312,9 +329,4 @@ const teleportTilesHandler = () => {
     canvas.addEventListener('click', getCoords);
 };
 
-// event listening
-
-enableCanvas();
-shuffleTilesButton.addEventListener('click', shuffleTilesHandler);
-teleportTilesButton.addEventListener('click', teleportTilesHandler);
-finishGameModalRepeatBtn.addEventListener('click', restartGame);
+init();

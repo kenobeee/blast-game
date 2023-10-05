@@ -18,7 +18,7 @@ export const growNewTile = (props:GrowNewTileP) => {
         startSize
     );
 
-    if (startSize < tileSize) {
-        requestAnimationFrame(() => growNewTile({constX, constY, startSize, bg, ctx}));
-    }
+    if (startSize < tileSize)
+        requestAnimationFrame(() =>
+            growNewTile({constX, constY, startSize, bg, ctx}));
 };
